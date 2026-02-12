@@ -1,0 +1,1381 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Painel de Remarketing — iPhone</title>
+  <style>
+    :root{
+      --bg:#f6f7fb;
+      --card:#ffffff;
+      --text:#111827;
+      --muted:#6b7280;
+      --line:#e5e7eb;
+      --shadow: 0 10px 24px rgba(17,24,39,.08);
+      --radius: 14px;
+      --accent:#2563eb;
+
+      --bad:#ef4444;
+      --warn:#f59e0b;
+
+      --cat-venda:#38bdf8;
+      --cat-upgrade:#22c55e;
+      --cat-conserto:#a78bfa;
+
+      --status-aguardando:#fb923c;
+      --status-negociando:#60a5fa;
+      --status-orcamento:#fbbf24;
+      --status-fechado:#10b981;
+      --status-perdido:#ef4444;
+      --status-respondeu:#94a3b8;
+      --status-soobrigado:#fb923c;
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Helvetica Neue", sans-serif;
+      background: linear-gradient(180deg, #fbfcff 0%, var(--bg) 40%, #f3f6ff 100%);
+      color:var(--text);
+    }
+
+    header{
+      position:sticky; top:0; z-index:20;
+      background: rgba(255,255,255,.92);
+      backdrop-filter: blur(10px);
+      border-bottom:1px solid var(--line);
+    }
+    .wrap{max-width:1100px; margin:0 auto; padding:14px 14px}
+    .top{
+      display:flex; gap:10px; flex-wrap:wrap;
+      align-items:flex-end; justify-content:space-between;
+    }
+    h1{font-size:16px; margin:0}
+    .sub{font-size:12px; color:var(--muted); margin-top:4px}
+
+    .controls{
+      display:flex; gap:8px; flex-wrap:wrap; align-items:center;
+      width:100%;
+      margin-top:10px;
+    }
+    input, select, textarea{
+      width:100%;
+      padding:12px 12px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background:#fff;
+      outline:none;
+      font-size:13px;
+      color:var(--text);
+    }
+    textarea{min-height:90px; resize:vertical}
+    input::placeholder{color:#9ca3af}
+    .btn{
+      padding:11px 12px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background: #fff;
+      color:var(--text);
+      cursor:pointer;
+      transition:.15s transform ease, .15s opacity ease;
+      user-select:none;
+      box-shadow: 0 6px 16px rgba(17,24,39,.05);
+      white-space:nowrap;
+      font-size:13px;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:6px;
+    }
+    .btn.primary{
+      background: var(--accent);
+      color:#fff;
+      border-color: rgba(37,99,235,.2);
+    }
+    .btn.danger{
+      background: #fff;
+      border-color: rgba(239,68,68,.35);
+      color:#b91c1c;
+    }
+    .btn:hover{transform: translateY(-1px)}
+    .btn:active{transform: translateY(0px); opacity:.92}
+
+    main .wrap{padding-top:14px; padding-bottom:28px}
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:12px;
+    }
+    @media (min-width: 900px){
+      .grid{grid-template-columns: 420px 1fr;}
+    }
+
+    .panel{
+      background: var(--card);
+      border:1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding:12px;
+    }
+    .panel h2{
+      margin:0 0 10px 0;
+      font-size:13px;
+      font-weight:900;
+    }
+    .row{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:8px;
+      margin-bottom:8px;
+    }
+    @media (max-width: 520px){
+      .row{grid-template-columns:1fr;}
+    }
+
+    .hint{color:var(--muted); font-size:12px; margin-top:6px}
+
+    .toolbar{
+      display:flex; gap:8px; flex-wrap:wrap; align-items:center;
+      margin-bottom:10px;
+    }
+    .toolbar .pill{
+      font-size:12px;
+      padding:7px 10px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:#fff;
+      cursor:pointer;
+      color:var(--muted);
+      user-select:none;
+    }
+    .toolbar .pill.active{
+      background: rgba(37,99,235,.08);
+      border-color: rgba(37,99,235,.25);
+      color: var(--text);
+      font-weight:800;
+    }
+
+    table{
+      width:100%;
+      border-collapse:separate;
+      border-spacing:0;
+      overflow:hidden;
+      border-radius: 14px;
+      border:1px solid var(--line);
+      background:#fff;
+    }
+    thead th{
+      text-align:left;
+      font-size:12px;
+      color:var(--muted);
+      padding:10px 10px;
+      border-bottom:1px solid var(--line);
+      background:#fbfcff;
+      position:sticky;
+      top:0;
+      z-index:5;
+    }
+    tbody td{
+      padding:10px 10px;
+      font-size:13px;
+      border-bottom:1px solid var(--line);
+      vertical-align:top;
+    }
+    tbody tr:last-child td{border-bottom:none}
+
+    .tag{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:#f9fafb;
+      font-size:12px;
+      white-space:nowrap;
+    }
+    .dot{width:10px; height:10px; border-radius:999px; background: #cbd5e1}
+
+    .tag.cat-venda .dot{background: var(--cat-venda)}
+    .tag.cat-upgrade .dot{background: var(--cat-upgrade)}
+    .tag.cat-conserto .dot{background: var(--cat-conserto)}
+
+    .tag.st-aguardando .dot{background: var(--status-aguardando)}
+    .tag.st-soobrigado .dot{background: var(--status-soobrigado)}
+    .tag.st-negociando .dot{background: var(--status-negociando)}
+    .tag.st-orcamento .dot{background: var(--status-orcamento)}
+    .tag.st-fechado .dot{background: var(--status-fechado)}
+    .tag.st-perdido .dot{background: var(--status-perdido)}
+    .tag.st-respondeu .dot{background: var(--status-respondeu)}
+
+    .actions{
+      display:flex; gap:8px; flex-wrap:wrap;
+    }
+    .mini{
+      padding:8px 10px;
+      border-radius:10px;
+      border:1px solid var(--line);
+      background:#fff;
+      cursor:pointer;
+      font-size:12px;
+    }
+    .mini.primary{
+      background: rgba(37,99,235,.08);
+      border-color: rgba(37,99,235,.25);
+    }
+
+    .overdue{ background: rgba(239,68,68,.08); }
+    .dueSoon{ background: rgba(245,158,11,.10); }
+
+    .muted{color:var(--muted)}
+    .right{ text-align:right }
+    .small{ font-size:12px }
+
+    .toast{
+      position:fixed;
+      left:50%; bottom:14px; z-index:60;
+      transform:translateX(-50%);
+      background: #111827;
+      color:#fff;
+      padding:10px 12px;
+      border-radius:12px;
+      box-shadow: 0 14px 30px rgba(17,24,39,.25);
+      opacity:0;
+      pointer-events:none;
+      transition: .18s ease;
+      font-size:13px;
+      max-width: 92vw;
+    }
+    .toast.show{opacity:1; transform:translateX(-50%) translateY(-2px)}
+
+    /* Popup (modal) do remarketing */
+    .backdrop{
+      position:fixed; inset:0; z-index:80;
+      background: rgba(17,24,39,.35);
+      display:none;
+      align-items:flex-end;
+      justify-content:center;
+      padding:10px;
+    }
+    .modal{
+      width:min(900px, 100%);
+      background:#fff;
+      border-radius: 18px;
+      border:1px solid var(--line);
+      box-shadow: 0 20px 40px rgba(17,24,39,.18);
+      overflow:hidden;
+    }
+    .modalHeader{
+      padding:12px 14px;
+      border-bottom:1px solid var(--line);
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+    }
+    .modalHeader h3{margin:0; font-size:14px}
+    .modalBody{padding:12px 14px}
+    .modalFooter{
+      padding:12px 14px;
+      border-top:1px solid var(--line);
+      display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end;
+      background:#fafafa;
+    }
+    .kpi{
+      display:flex; gap:8px; flex-wrap:wrap; align-items:center;
+      margin:8px 0 10px 0;
+    }
+    .chip{
+      border:1px solid var(--line);
+      background:#fff;
+      padding:7px 10px;
+      border-radius:999px;
+      font-size:12px;
+      color:var(--muted);
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+    }
+    .chip strong{color:var(--text)}
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="top">
+      <div>
+        <h1>Painel de Remarketing (manual)</h1>
+        <div class="sub">Venceu = vermelho e sobe pro topo • Popup • Vibração • Título piscando • Beep (se ativar som)</div>
+      </div>
+      <div class="actions">
+        <button class="btn" id="btnNotify">Ativar notificações</button>
+        <button class="btn" id="btnSound">Ativar som</button>
+        <button class="btn" id="btnExport">Exportar</button>
+        <button class="btn" id="btnImport">Importar</button>
+      </div>
+    </div>
+
+    <div class="controls">
+      <input id="search" type="search" placeholder="Pesquisar por nome, telefone, categoria, status..." />
+      <button class="btn" id="btnClearSearch">Limpar</button>
+      <button class="btn danger" id="btnClearAll">Apagar tudo</button>
+    </div>
+
+    <div class="hint" id="summary"></div>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <div class="grid">
+      <div class="panel">
+        <h2>Novo lead / Atualizar</h2>
+
+        <div class="row">
+          <div>
+            <label class="small muted">Nome do cliente</label>
+            <input id="fName" placeholder="Ex: Ana" />
+          </div>
+          <div>
+            <label class="small muted">Telefone (com DDD)</label>
+            <input id="fPhone" placeholder="Ex: 11999998888" inputmode="numeric" />
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <label class="small muted">Categoria</label>
+            <select id="fCategory">
+              <option value="Venda de aparelhos">Venda de aparelhos</option>
+              <option value="Upgrade">Upgrade</option>
+              <option value="Consertos">Consertos</option>
+            </select>
+          </div>
+          <div>
+            <label class="small muted">Status</label>
+            <select id="fStatus">
+              <option value="Aguardando resposta">Aguardando resposta</option>
+              <option value="Só obrigado">Só obrigado</option>
+              <option value="Em negociação">Em negociação</option>
+              <option value="Orçamento enviado">Orçamento enviado</option>
+              <option value="Fechado">Fechado</option>
+              <option value="Perdido">Perdido</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <label class="small muted">Última interação (data/hora)</label>
+            <input id="fLast" type="datetime-local" />
+          </div>
+          <div>
+            <label class="small muted">Follow-up em</label>
+            <select id="fPreset">
+              <option value="1">1 minuto</option>
+              <option value="120" selected>2 horas</option>
+              <option value="1440">24 horas</option>
+              <option value="4320">3 dias</option>
+              <option value="10080">7 dias</option>
+              <option value="custom">Personalizado</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row" id="customRow" style="display:none">
+          <div>
+            <label class="small muted">Minutos (personalizado)</label>
+            <input id="fCustomMin" placeholder="Ex: 90" inputmode="numeric" />
+          </div>
+          <div>
+            <label class="small muted">Observação (opcional)</label>
+            <input id="fNote" placeholder="Ex: quer iPhone 15 256gb" />
+          </div>
+        </div>
+
+        <div class="row" id="noteRow">
+          <div style="grid-column:1/-1">
+            <label class="small muted">Observação (opcional)</label>
+            <input id="fNote2" placeholder="Ex: quer iPhone 15 256gb / comparar preços / entrada" />
+          </div>
+        </div>
+
+        <div class="actions" style="margin-top:10px">
+          <button class="btn primary" id="btnSave">Salvar / Atualizar</button>
+          <button class="btn" id="btnResetForm">Limpar formulário</button>
+        </div>
+
+        <div class="hint">
+          ✅ Para entrar em remarketing: status <b>“Aguardando resposta”</b>, <b>“Só obrigado”</b> ou <b>“Orçamento enviado”</b>.
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="toolbar">
+          <span class="pill active" data-filter="ativos">Ativos</span>
+          <span class="pill" data-filter="remarketing">Só Remarketing</span>
+          <span class="pill" data-filter="arquivo">Arquivo</span>
+          <span class="pill" data-filter="todos">Todos</span>
+          <span class="pill" data-filter="vencidos">Vencidos</span>
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Cliente</th>
+              <th>Categoria</th>
+              <th>Status</th>
+              <th>Prazo</th>
+              <th class="right">Ações</th>
+            </tr>
+          </thead>
+          <tbody id="tbody"></tbody>
+        </table>
+
+        <div class="hint">
+          • “<b>Marcar como respondeu</b>” manda pro <b>Arquivo</b> e tira do remarketing.<br/>
+          • O popup abre automaticamente quando vencer (se a página estiver aberta).
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- Popup Remarketing -->
+<div class="backdrop" id="rmBackdrop">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="rmTitle">
+    <div class="modalHeader">
+      <h3 id="rmTitle">Remarketing pendente</h3>
+      <button class="btn" id="rmClose">Fechar</button>
+    </div>
+    <div class="modalBody">
+      <div class="kpi" id="rmKpi"></div>
+
+      <label class="small muted">Próxima mensagem (selecione)</label>
+      <select id="rmTemplate"></select>
+
+      <div style="height:10px"></div>
+
+      <label class="small muted">Mensagem pronta (editar se quiser)</label>
+      <textarea id="rmText"></textarea>
+
+      <div class="hint">Dica: clique em “Copiar” e depois “Abrir WhatsApp”.</div>
+    </div>
+    <div class="modalFooter">
+      <button class="btn" id="rmCopy">Copiar</button>
+      <a class="btn primary" id="rmWhats" href="#" target="_blank" rel="noopener">Abrir WhatsApp</a>
+      <button class="btn" id="rmMarkResponded">Marcar como respondeu</button>
+      <button class="btn danger" id="rmSnooze">Adiar 2h</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast">OK</div>
+
+<script>
+  // =======================
+  // Storage / Model
+  // =======================
+  const STORAGE_KEY = "remarketing_leads_v4";
+  let leads = load();
+  let currentFilter = "ativos";
+  let editId = null;
+  let notificationsEnabled = false;
+
+  // Alarm state
+  let soundEnabled = false;
+  let alarmTimer = null;
+  let titleTimer = null;
+  const baseTitle = document.title;
+
+  // Popup
+  let currentRmLeadId = null;
+
+  // =======================
+  // Templates de Remarketing
+  // =======================
+  const RM_TEMPLATES = [
+    {
+      key:"2h_leve",
+      label:"Leve (2h depois)",
+      text:
+`Oi {nome}! 😊
+Passando rapidinho pra saber se você conseguiu ver as opções.
+Se me disser qual modelo/GB/cor você prefere, eu te mando as melhores opções do dia.`
+    },
+    {
+      key:"dia_seguinte",
+      label:"Dia seguinte (decisão fácil)",
+      text:
+`Oi {nome}! Tudo bem? 😊
+Pra eu te ajudar a decidir: você quer mais custo-benefício (seminovo/upgrade) ou faz questão do lacrado?
+Me responde com 1 letra: A) custo-benefício | B) lacrado 😄`
+    },
+    {
+      key:"entrada",
+      label:"Entrada (troca/upgrade)",
+      text:
+`{nome}, se você tiver um iPhone pra entrada, dá pra abater uma boa parte do valor 😊
+Quer que eu te mande o questionário rapidinho pra avaliar a diferença?`
+    },
+    {
+      key:"orcamento",
+      label:"Orçamento enviado (follow-up curto)",
+      text:
+`Oi {nome}! 😊
+Conseguiu ver o orçamento?
+Se quiser, me diz só o que ficou faltando (valor, parcelas ou disponibilidade) que eu ajusto pra você rapidinho.`
+    },
+    {
+      key:"sem_cobranca",
+      label:"Sem cobrança (sumiu)",
+      text:
+`Oi {nome}! 😊
+Só passando pra dizer que fico à disposição.
+Quando quiser, me manda seu modelo/GB/cor ou seu orçamento que eu te ajudo a escolher rapidinho.`
+    },
+    {
+      key:"reserva",
+      label:"Reserva (urgência elegante)",
+      text:
+`{nome}, só um toque rápido 😊
+Algumas opções acabam rápido durante o dia. Se você quiser, eu posso separar a melhor opção no seu nome por um tempinho enquanto você decide.`
+    }
+  ];
+
+  // =======================
+  // Elements
+  // =======================
+  const el = (id) => document.getElementById(id);
+
+  const fName = el("fName");
+  const fPhone = el("fPhone");
+  const fCategory = el("fCategory");
+  const fStatus = el("fStatus");
+  const fLast = el("fLast");
+  const fPreset = el("fPreset");
+  const fCustomMin = el("fCustomMin");
+  const customRow = el("customRow");
+  const fNote = el("fNote");
+  const fNote2 = el("fNote2");
+  const noteRow = el("noteRow");
+
+  const btnSave = el("btnSave");
+  const btnResetForm = el("btnResetForm");
+  const tbody = el("tbody");
+  const search = el("search");
+  const summary = el("summary");
+
+  const btnNotify = el("btnNotify");
+  const btnSound = el("btnSound");
+  const btnExport = el("btnExport");
+  const btnImport = el("btnImport");
+  const btnClearAll = el("btnClearAll");
+  const btnClearSearch = el("btnClearSearch");
+
+  const toast = el("toast");
+
+  // Popup Remarketing
+  const rmBackdrop = el("rmBackdrop");
+  const rmClose = el("rmClose");
+  const rmKpi = el("rmKpi");
+  const rmTemplate = el("rmTemplate");
+  const rmText = el("rmText");
+  const rmCopy = el("rmCopy");
+  const rmWhats = el("rmWhats");
+  const rmMarkResponded = el("rmMarkResponded");
+  const rmSnooze = el("rmSnooze");
+
+  // =======================
+  // Helpers
+  // =======================
+  function nowMs(){ return Date.now(); }
+
+  function showToast(msg){
+    toast.textContent = msg;
+    toast.classList.add("show");
+    setTimeout(()=>toast.classList.remove("show"), 1300);
+  }
+
+  function load(){
+    try{
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if(!raw) return [];
+      const data = JSON.parse(raw);
+      return Array.isArray(data) ? data : [];
+    }catch(e){
+      return [];
+    }
+  }
+  function persist(){
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(leads));
+  }
+
+  function uuid(){
+    return Math.random().toString(16).slice(2) + "-" + Math.random().toString(16).slice(2);
+  }
+
+  function cleanPhone(p){
+    return (p||"").replace(/\D/g,"");
+  }
+
+  function parseDatetimeLocal(value){
+    if(!value) return null;
+    const d = new Date(value);
+    const t = d.getTime();
+    return Number.isFinite(t) ? t : null;
+  }
+
+  function toDatetimeLocal(ms){
+    if(!ms) return "";
+    const d = new Date(ms);
+    const pad = (n)=>String(n).padStart(2,"0");
+    const yyyy = d.getFullYear();
+    const mm = pad(d.getMonth()+1);
+    const dd = pad(d.getDate());
+    const hh = pad(d.getHours());
+    const mi = pad(d.getMinutes());
+    return `${yyyy}-${mm}-${dd}T${hh}:${mi}`;
+  }
+
+  function fmtWhen(ms){
+    if(!ms) return "-";
+    const d = new Date(ms);
+    const pad = (n)=>String(n).padStart(2,"0");
+    return `${pad(d.getDate())}/${pad(d.getMonth()+1)} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  }
+
+  function msToHuman(delta){
+    const abs = Math.abs(delta);
+    const mins = Math.round(abs/60000);
+    if(mins < 60) return `${mins} min`;
+    const hrs = Math.round(mins/60);
+    if(hrs < 48) return `${hrs} h`;
+    const days = Math.round(hrs/24);
+    return `${days} d`;
+  }
+
+  function statusClass(s){
+    const map = {
+      "Aguardando resposta":"st-aguardando",
+      "Só obrigado":"st-soobrigado",
+      "Em negociação":"st-negociando",
+      "Orçamento enviado":"st-orcamento",
+      "Fechado":"st-fechado",
+      "Perdido":"st-perdido",
+      "Respondeu":"st-respondeu"
+    };
+    return map[s] || "st-aguardando";
+  }
+
+  function categoryClass(c){
+    const map = {
+      "Venda de aparelhos":"cat-venda",
+      "Upgrade":"cat-upgrade",
+      "Consertos":"cat-conserto"
+    };
+    return map[c] || "cat-venda";
+  }
+
+  function shouldBeInRemarketing(lead){
+    if(lead.archived) return false;
+    if(lead.status === "Fechado" || lead.status === "Perdido") return false;
+    return (lead.status === "Aguardando resposta" || lead.status === "Só obrigado" || lead.status === "Orçamento enviado");
+  }
+
+  function shouldBeInActiveView(lead){
+    return !lead.archived && lead.status !== "Fechado" && lead.status !== "Perdido";
+  }
+
+  function matchesSearch(lead, term){
+    if(!term) return true;
+    const t = term.toLowerCase();
+    const blob = [lead.name, lead.phone, lead.category, lead.status, lead.note || ""].join(" ").toLowerCase();
+    return blob.includes(t);
+  }
+
+  function escapeHtml(str){
+    return String(str||"")
+      .replaceAll("&","&amp;")
+      .replaceAll("<","&lt;")
+      .replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;")
+      .replaceAll("'","&#039;");
+  }
+
+  async function copyText(text){
+    try{
+      await navigator.clipboard.writeText(text);
+      showToast("Copiado ✅");
+    }catch(e){
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      ta.remove();
+      showToast("Copiado ✅");
+    }
+  }
+
+  function beep(){
+    try{
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const o = ctx.createOscillator();
+      const g = ctx.createGain();
+      o.connect(g); g.connect(ctx.destination);
+      o.type = "sine";
+      o.frequency.value = 880;
+      g.gain.value = 0.06;
+      o.start();
+      setTimeout(()=>{ o.stop(); ctx.close(); }, 160);
+    }catch(e){}
+  }
+
+  function buzz(){
+    if(navigator.vibrate) navigator.vibrate([200,80,200,80,350]);
+  }
+
+  // =======================
+  // Ativar som (necessário no iPhone)
+  // =======================
+  btnSound.addEventListener("click", ()=>{
+    soundEnabled = true;
+    try{
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const o = ctx.createOscillator();
+      const g = ctx.createGain();
+      o.connect(g); g.connect(ctx.destination);
+      g.gain.value = 0.001;
+      o.start();
+      setTimeout(()=>{ o.stop(); ctx.close(); }, 60);
+    }catch(e){}
+    showToast("Som ativado ✅");
+  });
+
+  function alarmPulse(){
+    buzz();
+    if(soundEnabled) beep();
+  }
+
+  function startTitleAlert(text){
+    stopTitleAlert();
+    let on = false;
+    titleTimer = setInterval(()=>{
+      document.title = on ? text : baseTitle;
+      on = !on;
+    }, 900);
+  }
+
+  function stopTitleAlert(){
+    if(titleTimer){
+      clearInterval(titleTimer);
+      titleTimer = null;
+      document.title = baseTitle;
+    }
+  }
+
+  function startAlarmLoop(){
+    if(alarmTimer) return;
+    alarmPulse();
+    alarmTimer = setInterval(alarmPulse, 8000);
+  }
+
+  function stopAlarmLoop(){
+    if(alarmTimer){
+      clearInterval(alarmTimer);
+      alarmTimer = null;
+    }
+  }
+
+  document.addEventListener("visibilitychange", ()=>{
+    if(!document.hidden){
+      const top = findTopOverdue();
+      if(top){
+        startTitleAlert(`🚨 1 vencido — ${top.name}`);
+        if(rmBackdrop.style.display !== "flex" && !top.popupShown){
+          openRemarketingPopup(top.id);
+        }
+        startAlarmLoop();
+      }else{
+        stopTitleAlert();
+        stopAlarmLoop();
+      }
+    }
+  });
+
+  // =======================
+  // Opção A: auto-preencher data/hora ao digitar nome/telefone (se vazio)
+  // =======================
+  function setLastNowIfEmpty(){
+    if(!fLast.value){
+      fLast.value = toDatetimeLocal(nowMs());
+    }
+  }
+  fName.addEventListener("input", setLastNowIfEmpty);
+  fPhone.addEventListener("input", setLastNowIfEmpty);
+
+  // =======================
+  // Form behavior
+  // =======================
+  function resetForm(){
+    editId = null;
+    fName.value = "";
+    fPhone.value = "";
+    fCategory.value = "Venda de aparelhos";
+    fStatus.value = "Aguardando resposta";
+    fLast.value = ""; // vazio: Opção A preenche ao digitar
+    fPreset.value = "120";
+    fCustomMin.value = "";
+    customRow.style.display = "none";
+    fNote.value = "";
+    fNote2.value = "";
+    noteRow.style.display = "block";
+    btnSave.textContent = "Salvar / Atualizar";
+  }
+
+  fPreset.addEventListener("change", ()=>{
+    if(fPreset.value === "custom"){
+      customRow.style.display = "grid";
+      noteRow.style.display = "none";
+    }else{
+      customRow.style.display = "none";
+      noteRow.style.display = "block";
+    }
+  });
+
+  btnResetForm.addEventListener("click", resetForm);
+
+  btnSave.addEventListener("click", ()=>{
+    const name = (fName.value||"").trim();
+    const phone = cleanPhone(fPhone.value);
+    if(!name || !phone){
+      showToast("Preencha nome e telefone");
+      return;
+    }
+
+    if(!fLast.value) fLast.value = toDatetimeLocal(nowMs());
+
+    const category = fCategory.value;
+    const status = fStatus.value;
+
+    const lastAt = parseDatetimeLocal(fLast.value) ?? nowMs();
+
+    let minutes = 0;
+    if(fPreset.value === "custom"){
+      minutes = parseInt((fCustomMin.value||"").replace(/\D/g,""), 10);
+      if(!Number.isFinite(minutes) || minutes <= 0){
+        showToast("Minutos inválidos");
+        return;
+      }
+    } else {
+      minutes = parseInt(fPreset.value, 10);
+      if(!Number.isFinite(minutes) || minutes <= 0){
+        showToast("Follow-up inválido");
+        return;
+      }
+    }
+
+    const dueAt = lastAt + (minutes * 60000);
+    const note = (fPreset.value === "custom" ? (fNote.value||"").trim() : (fNote2.value||"").trim());
+
+    if(editId){
+      const idx = leads.findIndex(x=>x.id === editId);
+      if(idx >= 0){
+        leads[idx] = {
+          ...leads[idx],
+          name, phone, category, status, lastAt, dueAt, note,
+          notifiedOverdue: false,
+          popupShown: false
+        };
+      }
+      editId = null;
+    } else {
+      leads.push({
+        id: uuid(),
+        name, phone, category, status,
+        lastAt, dueAt,
+        note,
+        archived: false,
+        notifiedOverdue: false,
+        popupShown: false
+      });
+    }
+
+    persist();
+    resetForm();
+    render();
+    showToast("Salvo ✅");
+  });
+
+  // =======================
+  // Filters UI
+  // =======================
+  document.querySelectorAll(".pill").forEach(p=>{
+    p.addEventListener("click", ()=>{
+      document.querySelectorAll(".pill").forEach(x=>x.classList.remove("active"));
+      p.classList.add("active");
+      currentFilter = p.dataset.filter;
+      render();
+    });
+  });
+
+  search.addEventListener("input", render);
+  btnClearSearch.addEventListener("click", ()=>{
+    search.value = "";
+    render();
+    search.focus();
+  });
+
+  btnClearAll.addEventListener("click", ()=>{
+    if(confirm("Tem certeza que deseja apagar TUDO?")){
+      leads = [];
+      persist();
+      render();
+      showToast("Tudo apagado");
+    }
+  });
+
+  // =======================
+  // Notifications
+  // =======================
+  btnNotify.addEventListener("click", async ()=>{
+    if(!("Notification" in window)){
+      showToast("Navegador não suporta notificações");
+      return;
+    }
+    try{
+      const perm = await Notification.requestPermission();
+      notificationsEnabled = (perm === "granted");
+      showToast(notificationsEnabled ? "Notificações ativadas ✅" : "Notificações negadas");
+    }catch(e){
+      showToast("Não foi possível ativar");
+    }
+  });
+
+  // =======================
+  // Render
+  // =======================
+  function render(){
+    const term = (search.value||"").trim();
+    const now = nowMs();
+
+    let list = leads.filter(l=>matchesSearch(l, term));
+
+    if(currentFilter === "ativos"){
+      list = list.filter(shouldBeInActiveView);
+    } else if(currentFilter === "remarketing"){
+      list = list.filter(shouldBeInRemarketing);
+    } else if(currentFilter === "arquivo"){
+      list = list.filter(l=>l.archived);
+    } else if(currentFilter === "vencidos"){
+      list = list.filter(l=>!l.archived && l.dueAt && l.dueAt <= now);
+    }
+
+    list.sort((a,b)=>{
+      const ao = (a.dueAt||0) <= now ? 0 : 1;
+      const bo = (b.dueAt||0) <= now ? 0 : 1;
+      if(ao !== bo) return ao - bo;
+      const ad = a.dueAt || 0;
+      const bd = b.dueAt || 0;
+      if(ad !== bd) return ad - bd;
+      return (b.lastAt||0) - (a.lastAt||0);
+    });
+
+    const total = leads.length;
+    const remarkCount = leads.filter(shouldBeInRemarketing).length;
+    const overdueCount = leads.filter(l=>!l.archived && l.dueAt && l.dueAt <= now && shouldBeInRemarketing(l)).length;
+    summary.innerHTML = `Total: <b>${total}</b> • Em remarketing: <b>${remarkCount}</b> • Vencidos: <b style="color:#b91c1c">${overdueCount}</b>`;
+
+    tbody.innerHTML = "";
+    if(list.length === 0){
+      const tr = document.createElement("tr");
+      tr.innerHTML = `<td colspan="5" class="muted">Nenhum item encontrado.</td>`;
+      tbody.appendChild(tr);
+      return;
+    }
+
+    list.forEach(l=>{
+      const tr = document.createElement("tr");
+
+      const due = l.dueAt ? l.dueAt : null;
+      const delta = due ? (due - now) : null;
+
+      const isOverdue = due && due <= now && !l.archived;
+      const isSoon = due && due > now && delta <= (30*60000) && !l.archived;
+
+      if(isOverdue) tr.classList.add("overdue");
+      else if(isSoon) tr.classList.add("dueSoon");
+
+      const catCls = categoryClass(l.category);
+      const stCls = statusClass(l.status);
+
+      const dueText = due
+        ? (due <= now ? `VENCEU há ${msToHuman(now - due)}` : `Falta ${msToHuman(due - now)}`)
+        : "-";
+
+      const phonePretty = l.phone ? `+55 ${l.phone}` : "-";
+      const note = l.note ? `📝 ${l.note}` : "";
+
+      tr.innerHTML = `
+        <td>
+          <b>${escapeHtml(l.name)}</b><br/>
+          <span class="muted small">${escapeHtml(phonePretty)}</span><br/>
+          <span class="muted small">Último: ${escapeHtml(fmtWhen(l.lastAt))}</span>
+          ${note ? `<div class="muted small">${escapeHtml(note)}</div>` : ``}
+        </td>
+        <td><span class="tag ${catCls}"><span class="dot"></span>${escapeHtml(l.category)}</span></td>
+        <td><span class="tag ${stCls}"><span class="dot"></span>${escapeHtml(l.status)}</span></td>
+        <td>
+          <div><b>${escapeHtml(dueText)}</b></div>
+          <div class="muted small">Prazo: ${escapeHtml(fmtWhen(l.dueAt))}</div>
+        </td>
+        <td class="right">
+          <div class="actions" style="justify-content:flex-end">
+            <button class="mini primary" data-act="rm" data-id="${l.id}">Remarketing</button>
+            <button class="mini" data-act="edit" data-id="${l.id}">Editar</button>
+            ${(!l.archived ? `<button class="mini" data-act="respond" data-id="${l.id}">Marcar como respondeu</button>` : `<button class="mini" data-act="unarchive" data-id="${l.id}">Reativar</button>`)}
+            <button class="mini" data-act="archive" data-id="${l.id}">${l.archived ? "Arquivado" : "Arquivar"}</button>
+            <button class="mini" data-act="delete" data-id="${l.id}">Excluir</button>
+          </div>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+
+    tbody.querySelectorAll("button[data-act]").forEach(btn=>{
+      btn.addEventListener("click", ()=>{
+        const act = btn.dataset.act;
+        const id = btn.dataset.id;
+        handleAction(act, id);
+      });
+    });
+  }
+
+  function handleAction(act, id){
+    const idx = leads.findIndex(x=>x.id === id);
+    if(idx < 0) return;
+    const l = leads[idx];
+
+    if(act === "rm"){
+      openRemarketingPopup(l.id);
+      return;
+    }
+
+    if(act === "edit"){
+      editId = id;
+      fName.value = l.name || "";
+      fPhone.value = l.phone || "";
+      fCategory.value = l.category || "Venda de aparelhos";
+      fStatus.value = l.status || "Aguardando resposta";
+      fLast.value = toDatetimeLocal(l.lastAt || nowMs());
+
+      const mins = l.dueAt && l.lastAt ? Math.max(1, Math.round((l.dueAt - l.lastAt)/60000)) : 120;
+      const presets = ["1","120","1440","4320","10080"];
+      if(presets.includes(String(mins))){
+        fPreset.value = String(mins);
+        customRow.style.display = "none";
+        noteRow.style.display = "block";
+        fNote2.value = l.note || "";
+      } else {
+        fPreset.value = "custom";
+        customRow.style.display = "grid";
+        noteRow.style.display = "none";
+        fCustomMin.value = String(mins);
+        fNote.value = l.note || "";
+      }
+
+      btnSave.textContent = "Atualizar";
+      showToast("Editando…");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+
+    if(act === "respond"){
+      leads[idx] = { ...l, status:"Respondeu", archived:true, notifiedOverdue:false, popupShown:false };
+      persist(); render();
+      showToast("Saiu do remarketing ✅");
+      // se não existe mais vencido, para alarmes/título
+      if(!findTopOverdue()){ stopTitleAlert(); stopAlarmLoop(); }
+      return;
+    }
+
+    if(act === "archive"){
+      leads[idx] = { ...l, archived:true };
+      persist(); render();
+      showToast("Arquivado");
+      if(!findTopOverdue()){ stopTitleAlert(); stopAlarmLoop(); }
+      return;
+    }
+
+    if(act === "unarchive"){
+      leads[idx] = { ...l, archived:false, notifiedOverdue:false, popupShown:false };
+      persist(); render();
+      showToast("Reativado");
+      return;
+    }
+
+    if(act === "delete"){
+      if(confirm(`Excluir "${l.name}"?`)){
+        leads.splice(idx,1);
+        persist(); render();
+        showToast("Excluído");
+        if(!findTopOverdue()){ stopTitleAlert(); stopAlarmLoop(); }
+      }
+      return;
+    }
+  }
+
+  // =======================
+  // Remarketing Popup
+  // =======================
+  function buildTemplateSelect(){
+    rmTemplate.innerHTML = "";
+    RM_TEMPLATES.forEach(t=>{
+      const opt = document.createElement("option");
+      opt.value = t.key;
+      opt.textContent = t.label;
+      rmTemplate.appendChild(opt);
+    });
+  }
+
+  function fillTemplateText(templateText, lead){
+    return templateText.replaceAll("{nome}", lead.name || "{nome}");
+  }
+
+  function waLink(phone, text){
+    const p = cleanPhone(phone);
+    const msg = encodeURIComponent(text || "");
+    return `https://wa.me/55${p}?text=${msg}`;
+  }
+
+  function openRemarketingPopup(leadId){
+    const lead = leads.find(x=>x.id === leadId);
+    if(!lead) return;
+
+    currentRmLeadId = leadId;
+
+    const now = nowMs();
+    const overdue = lead.dueAt ? (lead.dueAt <= now) : false;
+    const dueText = lead.dueAt
+      ? (overdue ? `Venceu há ${msToHuman(now - lead.dueAt)}` : `Falta ${msToHuman(lead.dueAt - now)}`)
+      : "-";
+
+    rmKpi.innerHTML = `
+      <span class="chip">Cliente: <strong>${escapeHtml(lead.name)}</strong></span>
+      <span class="chip">Telefone: <strong>+55 ${escapeHtml(lead.phone)}</strong></span>
+      <span class="chip">Categoria: <strong>${escapeHtml(lead.category)}</strong></span>
+      <span class="chip">Status: <strong>${escapeHtml(lead.status)}</strong></span>
+      <span class="chip">Prazo: <strong style="color:${overdue ? "#b91c1c" : "#111827"}">${escapeHtml(dueText)}</strong></span>
+    `;
+
+    let defaultKey = "2h_leve";
+    if(lead.status === "Só obrigado") defaultKey = "dia_seguinte";
+    if(lead.status === "Orçamento enviado") defaultKey = "orcamento";
+    if(lead.category === "Upgrade") defaultKey = "entrada";
+
+    rmTemplate.value = defaultKey;
+
+    const t = RM_TEMPLATES.find(x=>x.key === rmTemplate.value) || RM_TEMPLATES[0];
+    rmText.value = fillTemplateText(t.text, lead);
+    rmWhats.href = waLink(lead.phone, rmText.value);
+
+    rmBackdrop.style.display = "flex";
+
+    const idx = leads.findIndex(x=>x.id === leadId);
+    if(idx >= 0){
+      leads[idx].popupShown = true;
+      persist();
+    }
+  }
+
+  function closeRemarketingPopup(){
+    rmBackdrop.style.display = "none";
+    currentRmLeadId = null;
+
+    // se não existe mais vencido, para alarmes e título
+    if(!findTopOverdue()){
+      stopTitleAlert();
+      stopAlarmLoop();
+    }
+  }
+
+  rmClose.addEventListener("click", closeRemarketingPopup);
+  rmBackdrop.addEventListener("click", (e)=>{ if(e.target === rmBackdrop) closeRemarketingPopup(); });
+
+  rmTemplate.addEventListener("change", ()=>{
+    if(!currentRmLeadId) return;
+    const lead = leads.find(x=>x.id === currentRmLeadId);
+    if(!lead) return;
+
+    const t = RM_TEMPLATES.find(x=>x.key === rmTemplate.value) || RM_TEMPLATES[0];
+    rmText.value = fillTemplateText(t.text, lead);
+    rmWhats.href = waLink(lead.phone, rmText.value);
+  });
+
+  rmText.addEventListener("input", ()=>{
+    if(!currentRmLeadId) return;
+    const lead = leads.find(x=>x.id === currentRmLeadId);
+    if(!lead) return;
+    rmWhats.href = waLink(lead.phone, rmText.value);
+  });
+
+  rmCopy.addEventListener("click", ()=>copyText(rmText.value));
+
+  rmMarkResponded.addEventListener("click", ()=>{
+    if(!currentRmLeadId) return;
+    const idx = leads.findIndex(x=>x.id === currentRmLeadId);
+    if(idx < 0) return;
+
+    leads[idx] = { ...leads[idx], status:"Respondeu", archived:true, notifiedOverdue:false, popupShown:false };
+    persist(); render();
+    showToast("Saiu do remarketing ✅");
+    closeRemarketingPopup();
+  });
+
+  rmSnooze.addEventListener("click", ()=>{
+    if(!currentRmLeadId) return;
+    const idx = leads.findIndex(x=>x.id === currentRmLeadId);
+    if(idx < 0) return;
+
+    const now = nowMs();
+    leads[idx] = { ...leads[idx], lastAt: now, dueAt: now + 120*60000, notifiedOverdue:false, popupShown:false };
+    persist(); render();
+    showToast("Adiado 2h ⏳");
+    closeRemarketingPopup();
+  });
+
+  // =======================
+  // Overdue finder + alarm
+  // =======================
+  function findTopOverdue(){
+    const now = nowMs();
+    const overdue = leads
+      .filter(l => !l.archived && shouldBeInRemarketing(l) && l.dueAt && l.dueAt <= now)
+      .sort((a,b)=> (a.dueAt||0) - (b.dueAt||0));
+    return overdue[0] || null;
+  }
+
+  function checkOverdueAndNotify(){
+    const now = nowMs();
+
+    const overdueToNotify = leads.filter(l =>
+      !l.archived &&
+      shouldBeInRemarketing(l) &&
+      l.dueAt &&
+      l.dueAt <= now &&
+      !l.notifiedOverdue
+    );
+
+    if(overdueToNotify.length > 0){
+      overdueToNotify.forEach(o=>{
+        const idx = leads.findIndex(x=>x.id === o.id);
+        if(idx >= 0) leads[idx].notifiedOverdue = true;
+      });
+      persist();
+      render();
+
+      const top = overdueToNotify[0];
+      startTitleAlert(`🚨 ${overdueToNotify.length} vencido(s) — ${top.name}`);
+      startAlarmLoop();
+
+      if(notificationsEnabled){
+        try{
+          new Notification("Remarketing pendente", {
+            body: `${top.name} (${top.category}) venceu há ${msToHuman(now - top.dueAt)}.`,
+            tag: "remarketing-overdue"
+          });
+        }catch(e){}
+      }
+
+      if(rmBackdrop.style.display !== "flex"){
+        openRemarketingPopup(top.id);
+      }
+      return;
+    }
+
+    const top = findTopOverdue();
+    if(top){
+      startTitleAlert(`🚨 1 vencido — ${top.name}`);
+      startAlarmLoop();
+
+      if(rmBackdrop.style.display !== "flex" && !top.popupShown){
+        openRemarketingPopup(top.id);
+      }
+    }else{
+      stopTitleAlert();
+      stopAlarmLoop();
+    }
+  }
+
+  setInterval(checkOverdueAndNotify, 30000);
+
+  // =======================
+  // Export / Import
+  // =======================
+  btnExport.addEventListener("click", ()=>{
+    const payload = JSON.stringify({ exportedAt: new Date().toISOString(), leads }, null, 2);
+    const blob = new Blob([payload], {type:"application/json"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "remarketing-leads.json";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+    showToast("Exportado ✅");
+  });
+
+  btnImport.addEventListener("click", ()=>{
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "application/json";
+    input.onchange = async ()=>{
+      const file = input.files?.[0];
+      if(!file) return;
+      try{
+        const text = await file.text();
+        const obj = JSON.parse(text);
+        const imported = obj.leads || obj;
+        if(!Array.isArray(imported)) throw new Error("Formato inválido");
+
+        leads = imported.map(x=>({
+          id: x.id || uuid(),
+          name: x.name || "",
+          phone: x.phone || "",
+          category: x.category || "Venda de aparelhos",
+          status: x.status || "Aguardando resposta",
+          lastAt: x.lastAt || nowMs(),
+          dueAt: x.dueAt || (x.lastAt || nowMs()) + 120*60000,
+          note: x.note || "",
+          archived: !!x.archived,
+          notifiedOverdue: !!x.notifiedOverdue,
+          popupShown: !!x.popupShown
+        }));
+        persist(); render();
+        showToast("Importado ✅");
+      }catch(e){
+        showToast("Falha ao importar");
+      }
+    };
+    input.click();
+  });
+
+  // =======================
+  // Init
+  // =======================
+  function initTemplates(){ buildTemplateSelect(); }
+
+  function resetFormInit(){
+    resetForm();
+    initTemplates();
+    render();
+    // checa logo ao abrir
+    setTimeout(checkOverdueAndNotify, 600);
+  }
+
+  resetFormInit();
+</script>
+</body>
+</html>
