@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Painel de Remarketing — iPhone</title>
+  <title>Painel — Mensagens + Remarketing (iPhone)</title>
   <style>
     :root{
       --bg:#f6f7fb;
@@ -58,6 +58,7 @@
       width:100%;
       margin-top:10px;
     }
+
     input, select, textarea{
       width:100%;
       padding:12px 12px;
@@ -70,6 +71,7 @@
     }
     textarea{min-height:90px; resize:vertical}
     input::placeholder{color:#9ca3af}
+
     .btn{
       padding:11px 12px;
       border-radius:12px;
@@ -100,6 +102,30 @@
     }
     .btn:hover{transform: translateY(-1px)}
     .btn:active{transform: translateY(0px); opacity:.92}
+
+    /* Abas principais */
+    .tabs{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-top:10px;
+    }
+    .tab{
+      padding:9px 12px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:#fff;
+      cursor:pointer;
+      font-size:12px;
+      color:var(--muted);
+      user-select:none;
+    }
+    .tab.active{
+      background: rgba(37,99,235,.08);
+      border-color: rgba(37,99,235,.25);
+      color: var(--text);
+      font-weight:800;
+    }
 
     main .wrap{padding-top:14px; padding-bottom:28px}
 
@@ -133,7 +159,6 @@
     @media (max-width: 520px){
       .row{grid-template-columns:1fr;}
     }
-
     .hint{color:var(--muted); font-size:12px; margin-top:6px}
 
     .toolbar{
@@ -250,7 +275,7 @@
     }
     .toast.show{opacity:1; transform:translateX(-50%) translateY(-2px)}
 
-    /* Popup (modal) do remarketing */
+    /* Popup remarketing */
     .backdrop{
       position:fixed; inset:0; z-index:80;
       background: rgba(17,24,39,.35);
@@ -296,6 +321,114 @@
       gap:6px;
     }
     .chip strong{color:var(--text)}
+
+    /* Mensagens rápidas (cards) */
+    .templateCard{
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:10px;
+      background:#fff;
+      margin-bottom:10px;
+      box-shadow: 0 6px 18px rgba(17,24,39,.05);
+    }
+    .templateTop{
+      display:flex; align-items:flex-start; justify-content:space-between; gap:10px; flex-wrap:wrap;
+    }
+    .templateTitle{font-weight:900; font-size:13px; margin:0}
+    .templateMeta{font-size:12px; color:var(--muted); margin-top:2px}
+    .templateBody{
+      white-space:pre-wrap;
+      border:1px solid var(--line);
+      border-radius:12px;
+      padding:10px;
+      background:#fbfcff;
+      font-size:13px;
+      margin-top:10px;
+    }
+
+    .twoCols{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:10px;
+    }
+    @media (max-width: 720px){
+      .twoCols{grid-template-columns:1fr;}
+    }
+
+    .sectionTitle{
+      display:flex; align-items:center; justify-content:space-between; gap:8px;
+      margin:0 0 8px 0;
+    }
+    .sectionTitle h2{margin:0; font-size:13px; font-weight:900}
+    .divider{height:1px;background:var(--line);margin:10px 0}
+
+    details{
+      border:1px solid var(--line);
+      border-radius:14px;
+      background:#fff;
+      overflow:hidden;
+      box-shadow: 0 6px 18px rgba(17,24,39,.05);
+      margin-bottom:10px;
+    }
+    summary{
+      list-style:none;
+      cursor:pointer;
+      padding:12px 12px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      font-weight:900;
+      font-size:13px;
+    }
+    summary::-webkit-details-marker{display:none}
+    .sumLeft{display:flex; align-items:center; gap:10px}
+    .badgeColor{width:12px;height:12px;border-radius:999px;display:inline-block}
+    .content{padding:12px; border-top:1px solid var(--line)}
+
+    /* ===== Acordeões (Mensagens rápidas) ===== */
+    .qAccordion{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      margin-top:10px;
+    }
+    .qAccordion details{
+      border:1px solid var(--line);
+      border-radius:14px;
+      background:#fff;
+      overflow:hidden;
+      box-shadow: 0 6px 18px rgba(17,24,39,.05);
+    }
+    .qAccordion summary{
+      list-style:none;
+      cursor:pointer;
+      padding:12px 12px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      font-weight:900;
+      font-size:13px;
+      user-select:none;
+    }
+    .qAccordion summary::-webkit-details-marker{display:none}
+    .qSumLeft{display:flex; align-items:center; gap:10px}
+    .qDot{
+      width:10px; height:10px; border-radius:999px;
+      background: var(--qcat);
+      box-shadow: 0 0 0 4px rgba(0,0,0,.04);
+    }
+    .qSumRight{
+      color:var(--muted);
+      font-weight:800;
+      font-size:12px;
+      white-space:nowrap;
+    }
+    .qPanel{
+      padding:12px;
+      border-top:1px solid var(--line);
+    }
   </style>
 </head>
 <body>
@@ -304,8 +437,8 @@
   <div class="wrap">
     <div class="top">
       <div>
-        <h1>Painel de Remarketing (manual)</h1>
-        <div class="sub">Venceu = vermelho e sobe pro topo • Popup • Vibração • Título piscando • Beep (se ativar som)</div>
+        <h1>Painel (iPhone)</h1>
+        <div class="sub">Mensagens rápidas + Remarketing (vendas e consertos em abas separadas)</div>
       </div>
       <div class="actions">
         <button class="btn" id="btnNotify">Ativar notificações</button>
@@ -315,7 +448,13 @@
       </div>
     </div>
 
-    <div class="controls">
+    <div class="tabs" role="tablist" aria-label="Seções">
+      <button class="tab active" id="tabMsgs" data-tab="mensagens" role="tab" aria-selected="true">💬 Mensagens rápidas</button>
+      <button class="tab" id="tabRmVendas" data-tab="rm_vendas" role="tab" aria-selected="false">📌 Remarketing — Vendas</button>
+      <button class="tab" id="tabRmConsertos" data-tab="rm_consertos" role="tab" aria-selected="false">🛠️ Remarketing — Consertos</button>
+    </div>
+
+    <div class="controls" id="rmControls" style="display:none">
       <input id="search" type="search" placeholder="Pesquisar por nome, telefone, categoria, status..." />
       <button class="btn" id="btnClearSearch">Limpar</button>
       <button class="btn danger" id="btnClearAll">Apagar tudo</button>
@@ -327,117 +466,292 @@
 
 <main>
   <div class="wrap">
-    <div class="grid">
-      <div class="panel">
-        <h2>Novo lead / Atualizar</h2>
 
-        <div class="row">
-          <div>
-            <label class="small muted">Nome do cliente</label>
-            <input id="fName" placeholder="Ex: Ana" />
-          </div>
-          <div>
-            <label class="small muted">Telefone (com DDD)</label>
-            <input id="fPhone" placeholder="Ex: 11999998888" inputmode="numeric" />
-          </div>
-        </div>
+    <!-- =======================
+         VIEW: MENSAGENS
+    ======================== -->
+    <section id="viewMensagens">
+      <div class="grid" style="grid-template-columns: 1fr;">
+        <div class="panel">
+          <div class="twoCols">
+            <!-- COL 1: Variáveis -->
+            <div>
+              <div class="sectionTitle">
+                <h2>Variáveis (edite e copie pronto)</h2>
+                <button class="mini" id="qSaveVars">Salvar</button>
+              </div>
 
-        <div class="row">
-          <div>
-            <label class="small muted">Categoria</label>
-            <select id="fCategory">
-              <option value="Venda de aparelhos">Venda de aparelhos</option>
-              <option value="Upgrade">Upgrade</option>
-              <option value="Consertos">Consertos</option>
-            </select>
-          </div>
-          <div>
-            <label class="small muted">Status</label>
-            <select id="fStatus">
-              <option value="Aguardando resposta">Aguardando resposta</option>
-              <option value="Só obrigado">Só obrigado</option>
-              <option value="Em negociação">Em negociação</option>
-              <option value="Orçamento enviado">Orçamento enviado</option>
-              <option value="Fechado">Fechado</option>
-              <option value="Perdido">Perdido</option>
-            </select>
-          </div>
-        </div>
+              <div class="row">
+                <div>
+                  <label class="small muted">Loja</label>
+                  <select id="qLoja">
+                    <option value="Consultório do iPhone">Consultório do iPhone</option>
+                    <option value="Brunão do iPhone">Brunão do iPhone</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="small muted">Atendente</label>
+                  <input id="qAtendente" placeholder="Ex: Raquel" />
+                </div>
+              </div>
 
-        <div class="row">
-          <div>
-            <label class="small muted">Última interação (data/hora)</label>
-            <input id="fLast" type="datetime-local" />
-          </div>
-          <div>
-            <label class="small muted">Follow-up em</label>
-            <select id="fPreset">
-              <option value="1">1 minuto</option>
-              <option value="120" selected>2 horas</option>
-              <option value="1440">24 horas</option>
-              <option value="4320">3 dias</option>
-              <option value="10080">7 dias</option>
-              <option value="custom">Personalizado</option>
-            </select>
-          </div>
-        </div>
+              <div class="row">
+                <div>
+                  <label class="small muted">Nome do cliente</label>
+                  <input id="qNome" placeholder="Ex: Ana" />
+                </div>
+                <div>
+                  <label class="small muted">Modelo</label>
+                  <input id="qModelo" placeholder="Ex: iPhone 13 Pro Max" />
+                </div>
+              </div>
 
-        <div class="row" id="customRow" style="display:none">
-          <div>
-            <label class="small muted">Minutos (personalizado)</label>
-            <input id="fCustomMin" placeholder="Ex: 90" inputmode="numeric" />
-          </div>
-          <div>
-            <label class="small muted">Observação (opcional)</label>
-            <input id="fNote" placeholder="Ex: quer iPhone 15 256gb" />
-          </div>
-        </div>
+              <div class="row">
+                <div>
+                  <label class="small muted">Defeito / Serviço</label>
+                  <input id="qDefeito" placeholder="Ex: troca de tela / bateria / placa" />
+                </div>
+                <div>
+                  <label class="small muted">Observação extra (opcional)</label>
+                  <input id="qObs" placeholder="Ex: precisa senha de tela p/ testes" />
+                </div>
+              </div>
 
-        <div class="row" id="noteRow">
-          <div style="grid-column:1/-1">
-            <label class="small muted">Observação (opcional)</label>
-            <input id="fNote2" placeholder="Ex: quer iPhone 15 256gb / comparar preços / entrada" />
+              <div class="divider"></div>
+
+              <details open>
+                <summary>
+                  <span class="sumLeft"><span class="badgeColor" style="background:var(--cat-conserto)"></span>Orçamento rápido (geral)</span>
+                  <span class="muted small">toque</span>
+                </summary>
+                <div class="content">
+                  <div class="row">
+                    <div>
+                      <label class="small muted">Opção / Peça</label>
+                      <input id="qOpcao" placeholder="Ex: Tela Premium Oled" />
+                    </div>
+                    <div>
+                      <label class="small muted">Valor (R$)</label>
+                      <input id="qValor" placeholder="Ex: 399,90" inputmode="decimal" />
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div>
+                      <label class="small muted">Parcelas</label>
+                      <input id="qParcelas" placeholder="Ex: até 6x sem juros" />
+                    </div>
+                    <div>
+                      <label class="small muted">Prazo</label>
+                      <input id="qPrazo" placeholder="Ex: 1h / 2h / 3 a 6 dias úteis" />
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div>
+                      <label class="small muted">Garantia</label>
+                      <input id="qGarantia" placeholder="Ex: 3 meses" />
+                    </div>
+                    <div>
+                      <label class="small muted">Ação rápida</label>
+                      <button class="mini" id="qResetVars">Limpar variáveis</button>
+                    </div>
+                  </div>
+
+                  <div class="hint">Essas variáveis são usadas nos templates.</div>
+                </div>
+              </details>
+
+              <details>
+                <summary>
+                  <span class="sumLeft"><span class="badgeColor" style="background:var(--warn)"></span>Telas: valores (Standard / Premium / Original)</span>
+                  <span class="muted small">toque</span>
+                </summary>
+                <div class="content">
+                  <div class="row">
+                    <div>
+                      <label class="small muted">Tela Standard (R$)</label>
+                      <input id="qTelaStandard" placeholder="Ex: 899,90" inputmode="decimal" />
+                    </div>
+                    <div>
+                      <label class="small muted">Tela Premium Oled (R$)</label>
+                      <input id="qTelaPremium" placeholder="Ex: 1299,90" inputmode="decimal" />
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div>
+                      <label class="small muted">Tela Original (R$)</label>
+                      <input id="qTelaOriginal" placeholder="Ex: 1999,90" inputmode="decimal" />
+                    </div>
+                    <div>
+                      <label class="small muted">Selecionar tipo (auto preenche Opção/Valor)</label>
+                      <select id="qTelaTipo">
+                        <option value="">— selecione —</option>
+                        <option value="standard">Standard</option>
+                        <option value="premium">Premium Oled</option>
+                        <option value="original">Original</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="hint">Escolheu o tipo → preenche <b>Opção/Valor</b>.</div>
+                </div>
+              </details>
+
+              <div class="hint">As variáveis ficam salvas no seu aparelho (localStorage).</div>
+            </div>
+
+            <!-- COL 2: Mensagens rápidas (Vendas + Consertos) -->
+            <div>
+              <div class="sectionTitle">
+                <h2>Mensagens rápidas</h2>
+                <span class="muted small">vendas + consertos em acordeões</span>
+              </div>
+
+              <input id="qSearch" type="search" placeholder="Buscar: tela, bateria, preço, parcelas, estoque, agendar..." />
+              <div class="hint">Toque na categoria para abrir/fechar. A busca filtra dentro de tudo.</div>
+
+              <div class="divider"></div>
+
+              <!-- VENDAS -->
+              <div class="sectionTitle" style="margin-top:6px">
+                <h2>Vendas / Upgrade — Mensagens rápidas</h2>
+                <span class="muted small">fechado por padrão</span>
+              </div>
+              <div class="qAccordion" id="salesAccordion"></div>
+
+              <div class="divider"></div>
+
+              <!-- CONSERTOS -->
+              <div class="sectionTitle" style="margin-top:6px">
+                <h2>Consertos — Mensagens rápidas</h2>
+                <span class="muted small">fechado por padrão</span>
+              </div>
+              <div class="qAccordion" id="quickAccordion"></div>
+            </div>
+
           </div>
-        </div>
-
-        <div class="actions" style="margin-top:10px">
-          <button class="btn primary" id="btnSave">Salvar / Atualizar</button>
-          <button class="btn" id="btnResetForm">Limpar formulário</button>
-        </div>
-
-        <div class="hint">
-          ✅ Para entrar em remarketing: status <b>“Aguardando resposta”</b>, <b>“Só obrigado”</b> ou <b>“Orçamento enviado”</b>.
         </div>
       </div>
+    </section>
 
-      <div class="panel">
-        <div class="toolbar">
-          <span class="pill active" data-filter="ativos">Ativos</span>
-          <span class="pill" data-filter="remarketing">Só Remarketing</span>
-          <span class="pill" data-filter="arquivo">Arquivo</span>
-          <span class="pill" data-filter="todos">Todos</span>
-          <span class="pill" data-filter="vencidos">Vencidos</span>
+    <!-- =======================
+         VIEW: REMARKETING
+    ======================== -->
+    <section id="viewRemarketing" style="display:none">
+      <div class="grid">
+        <div class="panel">
+          <h2 id="rmTitlePanel">Novo lead / Atualizar</h2>
+
+          <div class="row">
+            <div>
+              <label class="small muted">Nome do cliente</label>
+              <input id="fName" placeholder="Ex: Ana" />
+            </div>
+            <div>
+              <label class="small muted">Telefone (com DDD)</label>
+              <input id="fPhone" placeholder="Ex: 11999998888" inputmode="numeric" />
+            </div>
+          </div>
+
+          <div class="row">
+            <div>
+              <label class="small muted">Categoria</label>
+              <select id="fCategory">
+                <option value="Venda de aparelhos">Venda de aparelhos</option>
+                <option value="Upgrade">Upgrade</option>
+                <option value="Consertos">Consertos</option>
+              </select>
+              <div class="hint">Na aba “Vendas” você verá Venda+Upgrade; na aba “Consertos” verá só Consertos.</div>
+            </div>
+            <div>
+              <label class="small muted">Status</label>
+              <select id="fStatus">
+                <option value="Aguardando resposta">Aguardando resposta</option>
+                <option value="Só obrigado">Só obrigado</option>
+                <option value="Em negociação">Em negociação</option>
+                <option value="Orçamento enviado">Orçamento enviado</option>
+                <option value="Fechado">Fechado</option>
+                <option value="Perdido">Perdido</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row">
+            <div>
+              <label class="small muted">Última interação (data/hora)</label>
+              <input id="fLast" type="datetime-local" />
+            </div>
+            <div>
+              <label class="small muted">Follow-up em</label>
+              <select id="fPreset">
+                <option value="1">1 minuto</option>
+                <option value="120" selected>2 horas</option>
+                <option value="1440">24 horas</option>
+                <option value="4320">3 dias</option>
+                <option value="10080">7 dias</option>
+                <option value="custom">Personalizado</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row" id="customRow" style="display:none">
+            <div>
+              <label class="small muted">Minutos (personalizado)</label>
+              <input id="fCustomMin" placeholder="Ex: 90" inputmode="numeric" />
+            </div>
+            <div>
+              <label class="small muted">Observação (opcional)</label>
+              <input id="fNote" placeholder="Ex: quer iPhone 15 / tela trincada / bateria" />
+            </div>
+          </div>
+
+          <div class="row" id="noteRow">
+            <div style="grid-column:1/-1">
+              <label class="small muted">Observação (opcional)</label>
+              <input id="fNote2" placeholder="Ex: iPhone 13 Pro Max tela / quer agendar hoje" />
+            </div>
+          </div>
+
+          <div class="actions" style="margin-top:10px">
+            <button class="btn primary" id="btnSave">Salvar / Atualizar</button>
+            <button class="btn" id="btnResetForm">Limpar formulário</button>
+          </div>
+
+          <div class="hint">
+            ✅ Para entrar em remarketing: status <b>“Aguardando resposta”</b>, <b>“Só obrigado”</b> ou <b>“Orçamento enviado”</b>.
+          </div>
         </div>
 
-        <table>
-          <thead>
-            <tr>
-              <th>Cliente</th>
-              <th>Categoria</th>
-              <th>Status</th>
-              <th>Prazo</th>
-              <th class="right">Ações</th>
-            </tr>
-          </thead>
-          <tbody id="tbody"></tbody>
-        </table>
+        <div class="panel">
+          <div class="toolbar">
+            <span class="pill active" data-filter="ativos">Ativos</span>
+            <span class="pill" data-filter="remarketing">Só Remarketing</span>
+            <span class="pill" data-filter="arquivo">Arquivo</span>
+            <span class="pill" data-filter="todos">Todos</span>
+            <span class="pill" data-filter="vencidos">Vencidos</span>
+          </div>
 
-        <div class="hint">
-          • “<b>Marcar como respondeu</b>” manda pro <b>Arquivo</b> e tira do remarketing.<br/>
-          • O popup abre automaticamente quando vencer (se a página estiver aberta).
+          <table>
+            <thead>
+              <tr>
+                <th>Cliente</th>
+                <th>Categoria</th>
+                <th>Status</th>
+                <th>Prazo</th>
+                <th class="right">Ações</th>
+              </tr>
+            </thead>
+            <tbody id="tbody"></tbody>
+          </table>
+
+          <div class="hint">
+            • “<b>Marcar como respondeu</b>” manda pro <b>Arquivo</b> e tira do remarketing.<br/>
+            • iPhone: o som só toca se você clicar em <b>Ativar som</b>.
+          </div>
         </div>
       </div>
-    </div>
+    </section>
+
   </div>
 </main>
 
@@ -474,10 +788,15 @@
 
 <script>
   // =======================
-  // Storage / Model
+  // Keys
   // =======================
-  const STORAGE_KEY = "remarketing_leads_v4";
-  let leads = load();
+  const STORAGE_KEY = "remarketing_leads_unificado_v1";
+  const QUICK_VARS_KEY = "quick_vars_consertos_v2";
+
+  // =======================
+  // Model
+  // =======================
+  let leads = loadLeads();
   let currentFilter = "ativos";
   let editId = null;
   let notificationsEnabled = false;
@@ -491,56 +810,434 @@
   // Popup
   let currentRmLeadId = null;
 
+  // Aba atual de remarketing (vendas ou consertos)
+  let rmScope = "rm_vendas"; // rm_vendas | rm_consertos
+
   // =======================
-  // Templates de Remarketing
+  // Templates: Remarketing (popup)
   // =======================
   const RM_TEMPLATES = [
+    // Vendas/Upgrade
     {
       key:"2h_leve",
       label:"Leve (2h depois)",
-      text:
-`Oi {nome}! 😊
+      text:`Oi {nome}! 😊
 Passando rapidinho pra saber se você conseguiu ver as opções.
 Se me disser qual modelo/GB/cor você prefere, eu te mando as melhores opções do dia.`
     },
     {
       key:"dia_seguinte",
       label:"Dia seguinte (decisão fácil)",
-      text:
-`Oi {nome}! Tudo bem? 😊
+      text:`Oi {nome}! Tudo bem? 😊
 Pra eu te ajudar a decidir: você quer mais custo-benefício (seminovo/upgrade) ou faz questão do lacrado?
 Me responde com 1 letra: A) custo-benefício | B) lacrado 😄`
     },
     {
       key:"entrada",
       label:"Entrada (troca/upgrade)",
-      text:
-`{nome}, se você tiver um iPhone pra entrada, dá pra abater uma boa parte do valor 😊
+      text:`{nome}, se você tiver um iPhone pra entrada, dá pra abater uma boa parte do valor 😊
 Quer que eu te mande o questionário rapidinho pra avaliar a diferença?`
     },
     {
       key:"orcamento",
       label:"Orçamento enviado (follow-up curto)",
-      text:
-`Oi {nome}! 😊
+      text:`Oi {nome}! 😊
 Conseguiu ver o orçamento?
 Se quiser, me diz só o que ficou faltando (valor, parcelas ou disponibilidade) que eu ajusto pra você rapidinho.`
     },
+
+    // Consertos
     {
-      key:"sem_cobranca",
-      label:"Sem cobrança (sumiu)",
-      text:
-`Oi {nome}! 😊
-Só passando pra dizer que fico à disposição.
-Quando quiser, me manda seu modelo/GB/cor ou seu orçamento que eu te ajudo a escolher rapidinho.`
+      key:"c_orcamento",
+      label:"Consertos — orçamento enviado",
+      text:`Oi {nome}! 😊
+Conseguiu ver o orçamento do seu {modelo}?
+Se quiser, me diz se prefere resolver hoje ou agendar um horário que eu deixo tudo pronto pra você.`
     },
     {
-      key:"reserva",
-      label:"Reserva (urgência elegante)",
-      text:
-`{nome}, só um toque rápido 😊
-Algumas opções acabam rápido durante o dia. Se você quiser, eu posso separar a melhor opção no seu nome por um tempinho enquanto você decide.`
+      key:"c_agendar",
+      label:"Consertos — agendar agora",
+      text:`Oi {nome}! 😊
+Quer que eu já agende o reparo do seu {modelo}?
+Me diga só o melhor horário (manhã/tarde/noite) que eu encaixo pra você.`
+    },
+    {
+      key:"c_sumiu",
+      label:"Consertos — sumiu (sem cobrança)",
+      text:`Oi {nome}! 😊
+Passando rapidinho: se ainda quiser resolver o {defeito} do seu {modelo}, eu consigo te orientar e agendar sem você precisar esperar na loja.`
     }
+  ];
+
+  // =======================
+  // Templates: Mensagens rápidas (Vendas/Upgrade) - SUBSTITUÍDAS pelas que você mandou
+  // =======================
+  const SALES_TEMPLATES = [
+    // ATENDIMENTO
+    { id:"s_a_01", group:"s_atendimento", title:"Abertura (atendente + loja)", tags:["atendimento","abertura","boas-vindas"],
+      text:`Oi {nome}! Tudo bem? 😊
+Me chamo {atendente}. Sou atendente do {loja_nome} e irei dar prosseguimento com seu atendimento.` },
+
+    { id:"s_a_02", group:"s_atendimento", title:"Enviar tabela (seminovos/lacrados) — americano", tags:["tabela","seminovo","lacrado","americano"],
+      text:`Perfeito {nome}, vou estar lhe enviando nossa tabela de americanos seminovos e a de lacrados, assim você consegue verificar todos. 😀
+
+Se tiver qualquer dúvida, referente a modelo, configurações, etc, pode me chamar ok?` },
+
+    { id:"s_a_03", group:"s_atendimento", title:"Prova social (9 anos + 3.000 clientes + Google)", tags:["prova social","credibilidade","google"],
+      text:`{nome} você veio ao lugar certo! Somos uma loja com mais de 9 anos de história, oferecendo iPhones de qualidade e 100% originais.
+
+Já atendemos mais de 3.000 clientes satisfeitos que confiaram na gente para adquirir seus aparelhos, e temos nota máxima de recomendação no Google como reconhecimento do nosso trabalho. 💙📱` },
+
+    { id:"s_a_04", group:"s_atendimento", title:"Pergunta rápida (modelo/GB/cor)", tags:["qualificação","modelo","gb","cor"],
+      text:`Pra eu te passar as opções certinhas, {nome} 😊
+Qual iPhone você quer + quantos GB + qual cor?
+E você prefere seminovo, upgrade ou lacrado?` },
+
+    // OBJEÇÕES
+    { id:"s_o_01", group:"s_objecoes", title:"Lacrado que não fabrica mais (16 Pro Max)", tags:["objeção","lacrado","linha pro","discontinuado"],
+      text:`{nome}, te explico direitinho 😊📱
+No momento, não vamos ter o iPhone 16 Pro Max lacrado.
+
+Quando a Apple lança a nova geração (como agora o iPhone 17 Pro Max), ela descontinua oficialmente os modelos Pro da linha anterior, como o 16 Pro Max. Ou seja, eles deixam de ser produzidos e ficam bem mais difíceis de encontrar lacrados.
+
+Por isso, no momento tenho o 16 Pro Max seminovo, e o modelo lacrado e mais atual disponível é o iPhone 17 Pro Max, que já vem com as melhorias da nova geração.
+Se quiser, eu já te passo os valores e as opções dele 😊` },
+
+    { id:"s_o_02", group:"s_objecoes", title:"É tudo original? + saúde da bateria", tags:["objeção","original","bateria","saúde"],
+      text:`Entendo total essa dúvida, {nome} 😊
+Pode ficar tranquilo(a): nossos iPhones são todos originais ✅
+
+Em aparelhos seminovos/upgrade, como é normal ter desgaste com o uso, a única coisa que pode ter sido trocada (quando aparece 100%) é a bateria. E quando isso acontece, a gente coloca uma bateria de excelente qualidade e com a mesma capacidade, pra manter a experiência perfeita.
+
+A saúde de bateria dos nossos aparelhos costuma ficar entre 90% e 100% na maioria.
+Se quiser, eu confirmo a % certinha do aparelho que você escolher.` },
+
+    { id:"s_o_03", group:"s_objecoes", title:"Achei caro (resposta elegante)", tags:["objeção","preço","caro","orçamento"],
+      text:`Eu entendo você, {nome} 🙏
+O valor muda bastante por causa de condição, garantia e segurança da compra.
+
+Se você me disser seu orçamento, eu te mostro a melhor opção custo-benefício (às vezes mudando só cor/capacidade já melhora bem).` },
+
+    { id:"s_o_04", group:"s_objecoes", title:"Cartão não passa (alternativas)", tags:["objeção","cartão","parcelas","pix"],
+      text:`Acontece, {nome} 😅
+A gente pode tentar:
+• outra bandeira/cartão
+• reduzir as parcelas
+• ou fazer parte no PIX e parte no cartão
+
+Como você prefere que eu ajuste pra dar certo?` },
+
+    { id:"s_o_05", group:"s_objecoes", title:"Vou pensar (sem pressão)", tags:["objeção","vou pensar","reserva"],
+      text:`Claro, {nome} 😊
+Quer que eu reserve no seu nome por um tempinho, ou prefere que eu te chame se entrar outra opção melhor?` },
+
+    // UPGRADE
+    { id:"s_u_01", group:"s_upgrade", title:"Pedir permissão (questionário da entrada)", tags:["upgrade","entrada","questionário"],
+      text:`Para dar seu aparelho como entrada, preciso que responda um pequeno questionário para avaliarmos quanto ficaria a diferença. Posso estar enviando para você? 🙂` },
+
+    { id:"s_u_02", group:"s_upgrade", title:"Formulário completo de avaliação", tags:["upgrade","avaliação","formulário"],
+      text:`Poderia preencher esse formulário para avaliação do seu aparelho? 😁
+
+• Modelo do aparelho e a cor?
+-
+• Quantos gigas (Armazenamento)?
+-
+• É de Chip físico ou somente E-SIM?
+-
+• Qual a saúde da bateria?
+-
+• Funciona perfeitamente?
+-
+• Algo trincado ou quebrado?
+-
+• Já foi feito algum reparo?
+-
+• Possui nota fiscal?
+-
+• Possui caixa original?` },
+
+    { id:"s_u_03", group:"s_upgrade", title:"Pré-requisitos do upgrade (backup/iCloud/senhas)", tags:["upgrade","backup","icloud","senhas"],
+      text:`Perfeito, {nome}! Pra fazer o upgrade/troca sem dor de cabeça ✅
+Antes de trazer/enviar o seu iPhone, veja isso:
+
+1) Faça backup do iCloud (ou do computador) pra não perder nada
+2) Desative “Proteção de Dispositivo Roubado” (pra conseguir redefinir)
+3) Remova o iCloud do aparelho (sair do ID Apple / Buscar iPhone)
+4) Tenha a senha da tela e a senha do iCloud em mãos
+
+Se quiser, eu te explico o caminho no iPhone rapidinho.` },
+
+    { id:"s_u_04", group:"s_upgrade", title:"Upgrade recusado (resposta pronta)", tags:["upgrade","recusado","entrada"],
+      text:`Olá {nome}, já temos uma resposta sobre seu upgrade!
+
+Nossa equipe realizou a avaliação dos dados informados, mas infelizmente não foi aceito como parte do pagamento no novo iPhone que você irá adquirir conosco. 😕
+
+Mas você ainda tem outras opções, como vender para amigos, conhecidos e marketplaces, podendo conseguir uma boa quantia e dar de entrada para comprar seu aparelho. 🙂` },
+
+    // FECHAMENTO
+    { id:"s_f_01", group:"s_fechamento", title:"Fechamento (2 escolhas simples)", tags:["fechamento","retirada","entrega","pagamento"],
+      text:`Fechado, {nome}! ✅
+Pra finalizar do jeito mais fácil:
+Você prefere:
+1) Retirar na loja, ou
+2) Entrega (motoboy / ponto combinado)
+
+E vai ser à vista ou no cartão?` },
+
+    { id:"s_f_02", group:"s_fechamento", title:"PIX (reservar no nome do cliente)", tags:["fechamento","pix","reserva"],
+      text:`No PIX fica {valor}. ✅
+Se quiser, eu te passo a chave ({pix}) e já deixo reservado no seu nome, {nome}.` },
+
+    { id:"s_f_03", group:"s_fechamento", title:"Mensagem resumo pra encaminhar", tags:["fechamento","resumo","encaminhar"],
+      text:`Resumo rápido ✅
+📱 {modelo} {capacidade} {cor}
+💰 {valor} à vista | parcelamento disponível
+🧾 Nota fiscal no nome do cliente
+🛡️ Garantia de 1 ano
+Se quiser, eu reservo no seu nome por um tempinho.` },
+
+    // PÓS VENDA
+    { id:"s_p_01", group:"s_posvenda", title:"Pós-venda (confirmar recebimento + suporte)", tags:["pós-venda","suporte","configuração"],
+      text:`Oi {nome}! 😊
+Só confirmando: recebeu tudo certinho?
+
+Se precisar de ajuda pra configurar, migrar dados ou iCloud, me chama que eu te ajudo. ✅` },
+
+    { id:"s_p_02", group:"s_posvenda", title:"Pedir avaliação no Google", tags:["pós-venda","google","avaliação"],
+      text:`{nome}, obrigado(a) pela confiança! 💙
+Se puder deixar uma avaliação pra gente no Google, ajuda muito:
+{link_google} ⭐️` },
+
+    // REMARKETING (mensagens rápidas de vendas)
+    { id:"s_r_01", group:"s_remarketing", title:"Remarketing 2h depois (leve)", tags:["remarketing","2h","follow-up"],
+      text:`Oi {nome}! 😊 Aqui é a {atendente} do {loja_nome}.
+Conseguiu dar uma olhadinha nas opções?
+Se me disser seu modelo/GB/cor preferidos, eu te mando as melhores opções do dia.` },
+
+    { id:"s_r_02", group:"s_remarketing", title:"Remarketing no dia seguinte (com CTA)", tags:["remarketing","dia seguinte","cta"],
+      text:`Oi {nome}! Tudo bem? 😊
+Passando só pra te ajudar a decidir: você quer mais custo-benefício (seminovo/upgrade) ou faz questão do lacrado?
+Me responde com 1 letra: A) custo-benefício | B) lacrado 😄` },
+
+    { id:"s_r_03", group:"s_remarketing", title:"Remarketing (entrada) — destravar", tags:["remarketing","entrada","upgrade"],
+      text:`{nome}, caso você tenha um iPhone pra entrada, dá pra abater uma boa parte do valor 😊
+Quer que eu te mande o questionário rapidinho pra avaliar a diferença?` },
+
+    { id:"s_r_04", group:"s_remarketing", title:"Remarketing (objeção caro) — alternativa", tags:["remarketing","caro","orçamento"],
+      text:`{nome}, pra encaixar melhor no orçamento, eu posso te sugerir opções bem próximas (mudando cor ou GB) que ficam mais em conta.
+Qual seu limite de valor pra eu te mandar 2 opções certeiras?` },
+
+    { id:"s_r_05", group:"s_remarketing", title:"Remarketing (sem resposta) — sem cobrança", tags:["remarketing","sem resposta","leve"],
+      text:`Oi {nome}! 😊
+Só passando pra dizer que fico à disposição.
+Quando quiser, me manda seu modelo/GB/cor ou seu orçamento que eu te ajudo a escolher rapidinho.` },
+
+    { id:"s_r_06", group:"s_remarketing", title:"Remarketing (escassez elegante) — sem pressão", tags:["remarketing","escassez","reserva"],
+      text:`{nome}, só um toque rápido 😊
+Algumas opções acabam rápido durante o dia. Se você quiser, eu posso separar a melhor opção no seu nome por um tempinho enquanto você decide.` },
+
+    { id:"s_r_07", group:"s_remarketing", title:"Remarketing (lacrado vs upgrade) — comparação simples", tags:["remarketing","lacrado","upgrade","comparação"],
+      text:`{nome}, pra te ajudar: 
+• Lacrado = novo, garantia Apple
+• Upgrade = mais econômico, excelente estado + garantia da loja
+
+Se me disser o que você prioriza (economia, câmera ou bateria), eu te recomendo a melhor opção. 😊` },
+  ];
+
+  const SALES_GROUPS = [
+    { key:"s_atendimento", label:"Atendimento", color:"var(--cat-venda)" },
+    { key:"s_objecoes", label:"Objeções", color:"var(--status-orcamento)" },
+    { key:"s_upgrade", label:"Upgrade", color:"var(--cat-upgrade)" },
+    { key:"s_fechamento", label:"Fechamento", color:"var(--status-fechado)" },
+    { key:"s_posvenda", label:"Pós Venda", color:"var(--status-negociando)" },
+    { key:"s_remarketing", label:"Remarketing", color:"var(--status-aguardando)" },
+  ];
+
+  // =======================
+  // Templates: Mensagens rápidas (Consertos)
+  // =======================
+  const QUICK_TEMPLATES = [
+    // Geral
+    { id:"c_ini", group:"con_geral", title:"Início de atendimento", tags:["inicio","atendimento","consertos"],
+      text:`Olá {nome}, tudo bem? 😊
+Eu me chamo {atendente} e sou especialista da {loja_nome}. Vou dar prosseguimento com seu atendimento.`},
+    { id:"c_pedir_modelo_defeito", group:"con_geral", title:"Pedir modelo e defeito (se não enviou)", tags:["qualificacao","modelo","defeito"],
+      text:`Perfeito, {nome}! 😊
+Qual é o modelo do seu iPhone e qual defeito ele está apresentando?`},
+    { id:"c_orc_padrao", group:"con_geral", title:"Orçamento (padrão)", tags:["orcamento","padrao","agendar"],
+      text:`🔧 {defeito} — {modelo}
+💰 R$ {valor} | {parcelas}
+⏱ {prazo} de serviço | {garantia} de garantia
+
+📌 Importante:
+• Para testes, pode ser necessário informar a senha de tela.
+• Observação: {obs}
+
+💬 Quer agendar para hoje?`},
+
+    // Tela
+    { id:"c_tela_pergunta", group:"con_tela", title:"Tela — perguntar detalhes", tags:["tela","trincada","mancha","touch"],
+      text:`Certo, {nome}! Sobre a tela do seu {modelo}:
+Ela está trincada, apagada ou com manchas?
+E você sabe dizer se a tela é original?`},
+    { id:"c_telas_3_opcoes", group:"con_tela", title:"Tela — 3 opções (Standard / Premium / Original)", tags:["tela","opcoes","standard","oled","original"],
+      text:`Para o reparo do seu {modelo} trabalhamos com três opções de tela, todas com 3 meses de garantia e instalação feita em até 1h com agendamento prévio:
+
+✅ Tela Standard – R$ {tela_standard_valor}
+Opção mais escolhida pelos clientes, funcional unindo qualidade e ótimo custo-benefício.
+
+💎 Tela Premium Oled – R$ {tela_premium_valor}
+Qualidade de imagem superior, perfeita para quem quer cores mais próximas da original.
+Por ser Oled, ela é um pouco mais fina e consequentemente mais frágil.
+
+🌟 Tela Original – R$ {tela_original_valor}
+Peça original, mantendo o aparelho exatamente como saiu de fábrica. Disponível apenas enquanto houver estoque.
+
+📌 O pagamento pode ser parcelado em até 6x sem juros.
+
+obs: O iPhone exibirá uma mensagem nos Ajustes informando que a tela foi substituída.
+As telas Standard e Premium tem um aumento no consumo da bateria.`},
+
+    // Bateria (2 mensagens)
+    { id:"c_bat_sem_msg", group:"con_bateria", title:"Bateria — sem mensagem (iOS18 aviso)", tags:["bateria","ios18","aviso","premium"],
+      text:`A troca da bateria do seu {modelo} fica em R$399,90.
+
+✨ Diferenciais do serviço:
+• 🔋 Bateria premium, melhora no desempenho e duração.
+• 🛡️ 6 meses de garantia
+• ⏱️ Pronto em até 1 hora
+• 💳 Parcelamento em até 6x sem juros
+
+📌 Observação:
+A bateria por ser criptografada após o iOS18, sistema irá exibir um aviso nos ajustes após a troca da bateria.
+Esse aviso é apenas informativo, não interfere no desempenho, e a saúde da bateria 100% é exibida normalmente.
+
+Se preferir, há a opção de realizar o procedimento com tentativa de não exibir esse aviso, mediante reset do aparelho com cerca de 90% de taxa de sucesso. ☑️
+
+Fico à disposição para agendar quando for melhor para você.`},
+    { id:"c_bat_com_msg", group:"con_bateria", title:"Bateria — com mensagem (peça desconhecida)", tags:["bateria","peça desconhecida","saude 100%"],
+      text:`Troca de bateria – {modelo}
+💰 R$ 289,90 | até 6x sem juros
+⏱ 6 meses de garantia
+
+Bateria de primeira linha, com qualidade similar à original. ✅
+Por ser criptografada pela Apple, aparecerá como “peça desconhecida”, mas funciona normalmente e mostra 100% de saúde. ✅
+
+📌 Traga seu carregador no momento da troca
+🔑 Necessário informar a senha para testes
+📦 Sujeito a estoque
+
+💬 Quer que eu reserve a bateria para você?`},
+
+    // Vidro traseiro (2 mensagens)
+    { id:"c_vidro_laser", group:"con_traseira", title:"Vidro traseiro — troca a laser", tags:["vidro traseiro","laser","2h"],
+      text:`Troca do vidro traseiro – {modelo}
+💰 R$ 249,90 | até 6x sem juros
+⏱ 2h de serviço | 3 meses de garantia
+
+Feita com máquina a laser e vidro de alta qualidade (99,9% similar ao original). ✅
+Para este modelo, o aparelho precisa ser aberto para evitar que estilhaços de vidro furem a bateria ou danifiquem componentes internos. ✅
+Devido estar danificado ele não tem mais a resistência à água e garantia Apple.
+Requer a senha de tela para realizar os testes.
+
+💬 Quer agendar para hoje?`},
+    { id:"c_vidro_tampa", group:"con_traseira", title:"Vidro traseiro — tampa completa", tags:["vidro traseiro","tampa","2h"],
+      text:`Troca do vidro traseiro – {modelo}
+💰 R$ 799,90 | até 6x sem juros
+⏱ 2h de serviço | 3 meses de garantia ✅
+
+Devido estar danificado ele não tem mais a resistência à água e garantia Apple.
+Requer a senha de tela para realizar os testes.`},
+
+    // Outros
+    { id:"c_placa_valor", group:"con_outros", title:"Reparo de placa — orçamento", tags:["placa","reparo","3 a 6 dias","sucesso"],
+      text:`reparo de placa – {modelo}
+💰 R$ 900,00 | até 6x sem juros
+⏱ Prazo: 3 a 6 dias úteis | 3 meses de garantia
+
+✅ 90% de chance de resolução definitiva do problema
+✅ Pagamento só em caso de sucesso
+
+🔑 Necessário informar a senha para testes.
+📌 Após o reparo, caso seja identificada outra peça com defeito, o valor será à parte (em casos de aparelhos que estão apagados).
+📅 Atendimento apenas com agendamento prévio.
+⚠ Há um pequeno risco de o reparo não funcionar ou o aparelho parar de vez — a decisão é do cliente.`},
+
+    { id:"c_lente_camera", group:"con_outros", title:"Lente da câmera — vidro externo", tags:["lente","camera","vidro externo"],
+      text:`Troca do vidro externo da câmera traseira – {modelo}
+💰 R$ 349,90
+✔ Parcelamento em até 6x sem juros no cartão
+
+Realizamos a troca com peças de alta qualidade (similar ao original, já que a peça original só vem de fábrica no aparelho).
+
+⚠ Importante saber:
+Se a lente estiver embaçada ou com a câmera exposta, o problema continuará — para ficar 100%, é necessário trocar a câmera junto com a lente.
+
+💬 Podemos já agendar o horário para que você resolva isso sem precisar esperar na loja.`},
+
+    { id:"c_faceid", group:"con_outros", title:"Face ID — reparo", tags:["face id","1 dia util","sem cobrança se não der"],
+      text:`Certo, o reparo de Face ID para o {modelo} fica no valor de R$400,00 com 3 meses de garantia.
+
+O Face ID pode ter ou não solução, caso não seja possível não será cobrado nenhum valor.
+Leva cerca de 1 dia útil.
+É necessário a senha do aparelho para testes.`},
+
+    { id:"c_cronico_13pm", group:"con_outros", title:"Crônico 13 Pro Max — tela verde/branca/rosa", tags:["13 pro max","cronico","procedimento","tela"],
+      text:`Este defeito da tela do 13 Pro Max é crônico, diversos apresentam a tela verde/branca/rosa/amarela parcialmente ou totalmente.
+Existe um procedimento onde é feito uma adaptação na tela para corrigir este defeito, porém também tem a possibilidade de não ser isso, a tela apagar por completo ou até mesmo não funcionar o procedimento.
+
+Caso dê certo, fica no valor de R$700,00 com 3 meses de garantia (só paga se funcionar). Cerca de 95% funciona.
+
+Se não der certo o procedimento, poderá optar por ser feita a troca da tela completa, pela tela Original que está R$1799,90
+*Sujeita a estoque ou encomenda.`},
+
+    { id:"c_conector_carga", group:"con_outros", title:"Conector de carga", tags:["conector","carga","1h"],
+      text:`A troca do conector de carga do {modelo} está R$199,90 com 3 meses de garantia.
+Parcelamos em até 6x sem juros no cartão.
+Feito em até 1h.`},
+
+    { id:"c_camera_traseira", group:"con_outros", title:"Câmera traseira", tags:["camera traseira","1h"],
+      text:`A troca da câmera traseira {modelo} está R$199,90 com 3 meses de garantia.
+Parcelamos em até 6x sem juros no cartão.
+Feito em até 1h.`},
+
+    { id:"c_camera_frontal", group:"con_outros", title:"Câmera frontal", tags:["camera frontal","1h"],
+      text:`A troca da câmera frontal {modelo} está R$199,90 com 3 meses de garantia.
+Parcelamos em até 6x sem juros no cartão.
+Feito em até 1h.`},
+
+    { id:"c_flex_botoes", group:"con_outros", title:"Flex dos botões", tags:["flex","botoes","1h"],
+      text:`A troca do flex dos botões {modelo} está R$199,90 com 3 meses de garantia.
+Parcelamos em até 6x sem juros no cartão.
+Feito em até 1h.`},
+
+    { id:"c_flex_sensor", group:"con_outros", title:"Flex do sensor", tags:["flex","sensor","1h"],
+      text:`A troca do flex do sensor {modelo} está R$199,90 com 3 meses de garantia.
+Parcelamos em até 6x sem juros no cartão.
+Feito em até 1h.`},
+
+    // Remarketing (Consertos)
+    { id:"crm_apos_orc", group:"con_remarketing", title:"RM — após orçamento", tags:["remarketing","orcamento"],
+      text:`Oi {nome}! 😊
+Conseguiu ver o orçamento do seu {modelo}?
+Se quiser, me diz se prefere resolver hoje ou agendar um horário que eu deixo tudo pronto pra você.`},
+    { id:"crm_agendar", group:"con_remarketing", title:"RM — vamos agendar?", tags:["remarketing","agendar"],
+      text:`Oi {nome}! 😊
+Quer que eu já agende o conserto do seu {modelo}?
+Me diga só o melhor horário (manhã/tarde/noite) que eu encaixo pra você.`},
+    { id:"crm_sumiu", group:"con_remarketing", title:"RM — sumiu (sem cobrança)", tags:["remarketing","sumiu"],
+      text:`Oi {nome}! 😊
+Passando rapidinho: se ainda quiser resolver o {defeito} do seu {modelo}, eu consigo te orientar e agendar sem você precisar esperar na loja.`
+    }
+  ];
+
+  const QUICK_GROUPS = [
+    { key:"con_geral",       label:"Geral",          color:"var(--cat-conserto)" },
+    { key:"con_tela",        label:"Tela",           color:"var(--warn)" },
+    { key:"con_bateria",     label:"Bateria",        color:"var(--cat-upgrade)" },
+    { key:"con_traseira",    label:"Vidro traseiro", color:"var(--cat-venda)" },
+    { key:"con_outros",      label:"Outros",         color:"var(--cat-conserto)" },
+    { key:"con_remarketing", label:"Remarketing",    color:"var(--status-aguardando)" },
   ];
 
   // =======================
@@ -548,6 +1245,16 @@ Algumas opções acabam rápido durante o dia. Se você quiser, eu posso separar
   // =======================
   const el = (id) => document.getElementById(id);
 
+  // Tabs principais
+  const tabMsgs = el("tabMsgs");
+  const tabRmVendas = el("tabRmVendas");
+  const tabRmConsertos = el("tabRmConsertos");
+  const viewMensagens = el("viewMensagens");
+  const viewRemarketing = el("viewRemarketing");
+  const rmControls = el("rmControls");
+  const rmTitlePanel = el("rmTitlePanel");
+
+  // Remarketing form
   const fName = el("fName");
   const fPhone = el("fPhone");
   const fCategory = el("fCategory");
@@ -586,6 +1293,33 @@ Algumas opções acabam rápido durante o dia. Se você quiser, eu posso separar
   const rmMarkResponded = el("rmMarkResponded");
   const rmSnooze = el("rmSnooze");
 
+  // Mensagens rápidas: variáveis
+  const qLoja = el("qLoja");
+  const qAtendente = el("qAtendente");
+  const qNome = el("qNome");
+  const qModelo = el("qModelo");
+  const qDefeito = el("qDefeito");
+  const qObs = el("qObs");
+
+  const qOpcao = el("qOpcao");
+  const qValor = el("qValor");
+  const qParcelas = el("qParcelas");
+  const qPrazo = el("qPrazo");
+  const qGarantia = el("qGarantia");
+
+  const qTelaStandard = el("qTelaStandard");
+  const qTelaPremium = el("qTelaPremium");
+  const qTelaOriginal = el("qTelaOriginal");
+  const qTelaTipo = el("qTelaTipo");
+
+  const qSaveVars = el("qSaveVars");
+  const qResetVars = el("qResetVars");
+  const qSearch = el("qSearch");
+
+  // Acordeões
+  const quickAccordion = el("quickAccordion");
+  const salesAccordion = el("salesAccordion");
+
   // =======================
   // Helpers
   // =======================
@@ -594,21 +1328,7 @@ Algumas opções acabam rápido durante o dia. Se você quiser, eu posso separar
   function showToast(msg){
     toast.textContent = msg;
     toast.classList.add("show");
-    setTimeout(()=>toast.classList.remove("show"), 1300);
-  }
-
-  function load(){
-    try{
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if(!raw) return [];
-      const data = JSON.parse(raw);
-      return Array.isArray(data) ? data : [];
-    }catch(e){
-      return [];
-    }
-  }
-  function persist(){
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(leads));
+    setTimeout(()=>toast.classList.remove("show"), 1400);
   }
 
   function uuid(){
@@ -655,45 +1375,6 @@ Algumas opções acabam rápido durante o dia. Se você quiser, eu posso separar
     return `${days} d`;
   }
 
-  function statusClass(s){
-    const map = {
-      "Aguardando resposta":"st-aguardando",
-      "Só obrigado":"st-soobrigado",
-      "Em negociação":"st-negociando",
-      "Orçamento enviado":"st-orcamento",
-      "Fechado":"st-fechado",
-      "Perdido":"st-perdido",
-      "Respondeu":"st-respondeu"
-    };
-    return map[s] || "st-aguardando";
-  }
-
-  function categoryClass(c){
-    const map = {
-      "Venda de aparelhos":"cat-venda",
-      "Upgrade":"cat-upgrade",
-      "Consertos":"cat-conserto"
-    };
-    return map[c] || "cat-venda";
-  }
-
-  function shouldBeInRemarketing(lead){
-    if(lead.archived) return false;
-    if(lead.status === "Fechado" || lead.status === "Perdido") return false;
-    return (lead.status === "Aguardando resposta" || lead.status === "Só obrigado" || lead.status === "Orçamento enviado");
-  }
-
-  function shouldBeInActiveView(lead){
-    return !lead.archived && lead.status !== "Fechado" && lead.status !== "Perdido";
-  }
-
-  function matchesSearch(lead, term){
-    if(!term) return true;
-    const t = term.toLowerCase();
-    const blob = [lead.name, lead.phone, lead.category, lead.status, lead.note || ""].join(" ").toLowerCase();
-    return blob.includes(t);
-  }
-
   function escapeHtml(str){
     return String(str||"")
       .replaceAll("&","&amp;")
@@ -736,8 +1417,135 @@ Algumas opções acabam rápido durante o dia. Se você quiser, eu posso separar
     if(navigator.vibrate) navigator.vibrate([200,80,200,80,350]);
   }
 
+  function waLink(phone, text){
+    const p = cleanPhone(phone);
+    const msg = encodeURIComponent(text || "");
+    return `https://wa.me/55${p}?text=${msg}`;
+  }
+
   // =======================
-  // Ativar som (necessário no iPhone)
+  // Tabs principais
+  // =======================
+  function setTab(which){
+    const isMsgs = which === "mensagens";
+    const isRm = !isMsgs;
+
+    viewMensagens.style.display = isMsgs ? "block" : "none";
+    viewRemarketing.style.display = isRm ? "block" : "none";
+    rmControls.style.display = isRm ? "flex" : "none";
+
+    tabMsgs.classList.toggle("active", isMsgs);
+    tabRmVendas.classList.toggle("active", which === "rm_vendas");
+    tabRmConsertos.classList.toggle("active", which === "rm_consertos");
+
+    tabMsgs.setAttribute("aria-selected", isMsgs ? "true" : "false");
+    tabRmVendas.setAttribute("aria-selected", which === "rm_vendas" ? "true" : "false");
+    tabRmConsertos.setAttribute("aria-selected", which === "rm_consertos" ? "true" : "false");
+
+    if(which === "rm_vendas"){
+      rmScope = "rm_vendas";
+      rmTitlePanel.textContent = "Remarketing — Vendas / Upgrade";
+    }
+    if(which === "rm_consertos"){
+      rmScope = "rm_consertos";
+      rmTitlePanel.textContent = "Remarketing — Consertos";
+      fCategory.value = "Consertos";
+    }
+
+    render();
+    window.scrollTo({top:0, behavior:"smooth"});
+  }
+
+  tabMsgs.addEventListener("click", ()=>{ setTab("mensagens"); renderAllQuickAccordions(); });
+  tabRmVendas.addEventListener("click", ()=>setTab("rm_vendas"));
+  tabRmConsertos.addEventListener("click", ()=>setTab("rm_consertos"));
+
+  // =======================
+  // Storage: Leads
+  // =======================
+  function loadLeads(){
+    try{
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if(!raw) return [];
+      const data = JSON.parse(raw);
+      return Array.isArray(data) ? data : [];
+    }catch(e){
+      return [];
+    }
+  }
+  function persistLeads(){
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(leads));
+  }
+
+  // =======================
+  // Storage: Quick Vars
+  // =======================
+  function loadQuickVars(){
+    try{
+      const raw = localStorage.getItem(QUICK_VARS_KEY);
+      if(!raw) return null;
+      return JSON.parse(raw);
+    }catch(e){ return null; }
+  }
+  function persistQuickVars(v){
+    localStorage.setItem(QUICK_VARS_KEY, JSON.stringify(v));
+  }
+
+  function getVars(){
+    return {
+      loja_nome: (qLoja.value||"").trim() || "Consultório do iPhone",
+      atendente: (qAtendente.value||"").trim() || "{atendente}",
+      nome: (qNome.value||"").trim() || "{nome}",
+      modelo: (qModelo.value||"").trim() || "{modelo}",
+      defeito: (qDefeito.value||"").trim() || "{defeito}",
+      opcao: (qOpcao.value||"").trim() || "{opcao}",
+      valor: (qValor.value||"").trim() || "{valor}",
+      parcelas: (qParcelas.value||"").trim() || "{parcelas}",
+      prazo: (qPrazo.value||"").trim() || "{prazo}",
+      garantia: (qGarantia.value||"").trim() || "{garantia}",
+      obs: (qObs.value||"").trim() || "-",
+      tela_standard_valor: (qTelaStandard.value||"").trim() || "{tela_standard_valor}",
+      tela_premium_valor: (qTelaPremium.value||"").trim() || "{tela_premium_valor}",
+      tela_original_valor: (qTelaOriginal.value||"").trim() || "{tela_original_valor}",
+    };
+  }
+
+  function applyVarsToText(text, v){
+    return (text||"")
+      .replaceAll("{loja_nome}", v.loja_nome)
+      .replaceAll("{atendente}", v.atendente)
+      .replaceAll("{nome}", v.nome)
+      .replaceAll("{modelo}", v.modelo)
+      .replaceAll("{defeito}", v.defeito)
+      .replaceAll("{opcao}", v.opcao)
+      .replaceAll("{valor}", v.valor)
+      .replaceAll("{parcelas}", v.parcelas)
+      .replaceAll("{prazo}", v.prazo)
+      .replaceAll("{garantia}", v.garantia)
+      .replaceAll("{obs}", v.obs)
+      .replaceAll("{tela_standard_valor}", v.tela_standard_valor)
+      .replaceAll("{tela_premium_valor}", v.tela_premium_valor)
+      .replaceAll("{tela_original_valor}", v.tela_original_valor);
+  }
+
+  // Auto preencher Opção/Valor ao selecionar tipo de tela
+  qTelaTipo.addEventListener("change", ()=>{
+    const v = getVars();
+    if(qTelaTipo.value === "standard"){
+      qOpcao.value = "Tela Standard";
+      qValor.value = (v.tela_standard_valor || "").replace("{tela_standard_valor}","");
+    }else if(qTelaTipo.value === "premium"){
+      qOpcao.value = "Tela Premium Oled";
+      qValor.value = (v.tela_premium_valor || "").replace("{tela_premium_valor}","");
+    }else if(qTelaTipo.value === "original"){
+      qOpcao.value = "Tela Original";
+      qValor.value = (v.tela_original_valor || "").replace("{tela_original_valor}","");
+    }
+    renderAllQuickAccordions();
+  });
+
+  // =======================
+  // Alarmes / Notificações (mantidos)
   // =======================
   btnSound.addEventListener("click", ()=>{
     soundEnabled = true;
@@ -753,10 +1561,7 @@ Algumas opções acabam rápido durante o dia. Se você quiser, eu posso separar
     showToast("Som ativado ✅");
   });
 
-  function alarmPulse(){
-    buzz();
-    if(soundEnabled) beep();
-  }
+  function alarmPulse(){ buzz(); if(soundEnabled) beep(); }
 
   function startTitleAlert(text){
     stopTitleAlert();
@@ -804,9 +1609,67 @@ Algumas opções acabam rápido durante o dia. Se você quiser, eu posso separar
     }
   });
 
+  btnNotify.addEventListener("click", async ()=>{
+    if(!("Notification" in window)){
+      showToast("Navegador não suporta notificações");
+      return;
+    }
+    try{
+      const perm = await Notification.requestPermission();
+      notificationsEnabled = (perm === "granted");
+      showToast(notificationsEnabled ? "Notificações ativadas ✅" : "Notificações negadas");
+    }catch(e){
+      showToast("Não foi possível ativar");
+    }
+  });
+
   // =======================
-  // Opção A: auto-preencher data/hora ao digitar nome/telefone (se vazio)
+  // Remarketing logic (mantido)
   // =======================
+  function statusClass(s){
+    const map = {
+      "Aguardando resposta":"st-aguardando",
+      "Só obrigado":"st-soobrigado",
+      "Em negociação":"st-negociando",
+      "Orçamento enviado":"st-orcamento",
+      "Fechado":"st-fechado",
+      "Perdido":"st-perdido",
+      "Respondeu":"st-respondeu"
+    };
+    return map[s] || "st-aguardando";
+  }
+
+  function categoryClass(c){
+    const map = {
+      "Venda de aparelhos":"cat-venda",
+      "Upgrade":"cat-upgrade",
+      "Consertos":"cat-conserto"
+    };
+    return map[c] || "cat-venda";
+  }
+
+  function shouldBeInRemarketing(lead){
+    if(lead.archived) return false;
+    if(lead.status === "Fechado" || lead.status === "Perdido") return false;
+    return (lead.status === "Aguardando resposta" || lead.status === "Só obrigado" || lead.status === "Orçamento enviado");
+  }
+
+  function shouldBeInActiveView(lead){
+    return !lead.archived && lead.status !== "Fechado" && lead.status !== "Perdido";
+  }
+
+  function matchesSearch(lead, term){
+    if(!term) return true;
+    const t = term.toLowerCase();
+    const blob = [lead.name, lead.phone, lead.category, lead.status, lead.note || ""].join(" ").toLowerCase();
+    return blob.includes(t);
+  }
+
+  function matchesRmScope(lead){
+    if(rmScope === "rm_consertos") return lead.category === "Consertos";
+    return (lead.category === "Venda de aparelhos" || lead.category === "Upgrade");
+  }
+
   function setLastNowIfEmpty(){
     if(!fLast.value){
       fLast.value = toDatetimeLocal(nowMs());
@@ -815,16 +1678,13 @@ Algumas opções acabam rápido durante o dia. Se você quiser, eu posso separar
   fName.addEventListener("input", setLastNowIfEmpty);
   fPhone.addEventListener("input", setLastNowIfEmpty);
 
-  // =======================
-  // Form behavior
-  // =======================
   function resetForm(){
     editId = null;
     fName.value = "";
     fPhone.value = "";
-    fCategory.value = "Venda de aparelhos";
+    fCategory.value = (rmScope === "rm_consertos") ? "Consertos" : "Venda de aparelhos";
     fStatus.value = "Aguardando resposta";
-    fLast.value = ""; // vazio: Opção A preenche ao digitar
+    fLast.value = "";
     fPreset.value = "120";
     fCustomMin.value = "";
     customRow.style.display = "none";
@@ -858,7 +1718,6 @@ Algumas opções acabam rápido durante o dia. Se você quiser, eu posso separar
 
     const category = fCategory.value;
     const status = fStatus.value;
-
     const lastAt = parseDatetimeLocal(fLast.value) ?? nowMs();
 
     let minutes = 0;
@@ -882,35 +1741,19 @@ Algumas opções acabam rápido durante o dia. Se você quiser, eu posso separar
     if(editId){
       const idx = leads.findIndex(x=>x.id === editId);
       if(idx >= 0){
-        leads[idx] = {
-          ...leads[idx],
-          name, phone, category, status, lastAt, dueAt, note,
-          notifiedOverdue: false,
-          popupShown: false
-        };
+        leads[idx] = { ...leads[idx], name, phone, category, status, lastAt, dueAt, note, notifiedOverdue:false, popupShown:false };
       }
       editId = null;
     } else {
-      leads.push({
-        id: uuid(),
-        name, phone, category, status,
-        lastAt, dueAt,
-        note,
-        archived: false,
-        notifiedOverdue: false,
-        popupShown: false
-      });
+      leads.push({ id: uuid(), name, phone, category, status, lastAt, dueAt, note, archived:false, notifiedOverdue:false, popupShown:false });
     }
 
-    persist();
+    persistLeads();
     resetForm();
     render();
     showToast("Salvo ✅");
   });
 
-  // =======================
-  // Filters UI
-  // =======================
   document.querySelectorAll(".pill").forEach(p=>{
     p.addEventListener("click", ()=>{
       document.querySelectorAll(".pill").forEach(x=>x.classList.remove("active"));
@@ -930,37 +1773,29 @@ Algumas opções acabam rápido durante o dia. Se você quiser, eu posso separar
   btnClearAll.addEventListener("click", ()=>{
     if(confirm("Tem certeza que deseja apagar TUDO?")){
       leads = [];
-      persist();
+      persistLeads();
       render();
       showToast("Tudo apagado");
+      stopTitleAlert(); stopAlarmLoop();
     }
   });
 
-  // =======================
-  // Notifications
-  // =======================
-  btnNotify.addEventListener("click", async ()=>{
-    if(!("Notification" in window)){
-      showToast("Navegador não suporta notificações");
-      return;
-    }
-    try{
-      const perm = await Notification.requestPermission();
-      notificationsEnabled = (perm === "granted");
-      showToast(notificationsEnabled ? "Notificações ativadas ✅" : "Notificações negadas");
-    }catch(e){
-      showToast("Não foi possível ativar");
-    }
-  });
-
-  // =======================
-  // Render
-  // =======================
   function render(){
-    const term = (search.value||"").trim();
+    const isRmView = viewRemarketing.style.display !== "none";
     const now = nowMs();
 
-    let list = leads.filter(l=>matchesSearch(l, term));
+    const total = leads.length;
+    const remarkCount = leads.filter(shouldBeInRemarketing).length;
+    const overdueCount = leads.filter(l=>!l.archived && l.dueAt && l.dueAt <= now && shouldBeInRemarketing(l)).length;
+    summary.innerHTML = `Total leads: <b>${total}</b> • Em remarketing: <b>${remarkCount}</b> • Vencidos: <b style="color:#b91c1c">${overdueCount}</b>`;
+
+    if(!isRmView) return;
+
+    const term = (search.value||"").trim();
+
+    let list = leads
+      .filter(l=>matchesRmScope(l))
+      .filter(l=>matchesSearch(l, term));
 
     if(currentFilter === "ativos"){
       list = list.filter(shouldBeInActiveView);
@@ -982,22 +1817,16 @@ Algumas opções acabam rápido durante o dia. Se você quiser, eu posso separar
       return (b.lastAt||0) - (a.lastAt||0);
     });
 
-    const total = leads.length;
-    const remarkCount = leads.filter(shouldBeInRemarketing).length;
-    const overdueCount = leads.filter(l=>!l.archived && l.dueAt && l.dueAt <= now && shouldBeInRemarketing(l)).length;
-    summary.innerHTML = `Total: <b>${total}</b> • Em remarketing: <b>${remarkCount}</b> • Vencidos: <b style="color:#b91c1c">${overdueCount}</b>`;
-
     tbody.innerHTML = "";
     if(list.length === 0){
       const tr = document.createElement("tr");
-      tr.innerHTML = `<td colspan="5" class="muted">Nenhum item encontrado.</td>`;
+      tr.innerHTML = `<td colspan="5" class="muted">Nenhum item encontrado nesta aba.</td>`;
       tbody.appendChild(tr);
       return;
     }
 
     list.forEach(l=>{
       const tr = document.createElement("tr");
-
       const due = l.dueAt ? l.dueAt : null;
       const delta = due ? (due - now) : null;
 
@@ -1045,9 +1874,7 @@ Algumas opções acabam rápido durante o dia. Se você quiser, eu posso separar
 
     tbody.querySelectorAll("button[data-act]").forEach(btn=>{
       btn.addEventListener("click", ()=>{
-        const act = btn.dataset.act;
-        const id = btn.dataset.id;
-        handleAction(act, id);
+        handleAction(btn.dataset.act, btn.dataset.id);
       });
     });
   }
@@ -1057,16 +1884,13 @@ Algumas opções acabam rápido durante o dia. Se você quiser, eu posso separar
     if(idx < 0) return;
     const l = leads[idx];
 
-    if(act === "rm"){
-      openRemarketingPopup(l.id);
-      return;
-    }
+    if(act === "rm"){ openRemarketingPopup(l.id); return; }
 
     if(act === "edit"){
       editId = id;
       fName.value = l.name || "";
       fPhone.value = l.phone || "";
-      fCategory.value = l.category || "Venda de aparelhos";
+      fCategory.value = l.category || (rmScope==="rm_consertos" ? "Consertos" : "Venda de aparelhos");
       fStatus.value = l.status || "Aguardando resposta";
       fLast.value = toDatetimeLocal(l.lastAt || nowMs());
 
@@ -1093,16 +1917,15 @@ Algumas opções acabam rápido durante o dia. Se você quiser, eu posso separar
 
     if(act === "respond"){
       leads[idx] = { ...l, status:"Respondeu", archived:true, notifiedOverdue:false, popupShown:false };
-      persist(); render();
+      persistLeads(); render();
       showToast("Saiu do remarketing ✅");
-      // se não existe mais vencido, para alarmes/título
       if(!findTopOverdue()){ stopTitleAlert(); stopAlarmLoop(); }
       return;
     }
 
     if(act === "archive"){
       leads[idx] = { ...l, archived:true };
-      persist(); render();
+      persistLeads(); render();
       showToast("Arquivado");
       if(!findTopOverdue()){ stopTitleAlert(); stopAlarmLoop(); }
       return;
@@ -1110,7 +1933,7 @@ Algumas opções acabam rápido durante o dia. Se você quiser, eu posso separar
 
     if(act === "unarchive"){
       leads[idx] = { ...l, archived:false, notifiedOverdue:false, popupShown:false };
-      persist(); render();
+      persistLeads(); render();
       showToast("Reativado");
       return;
     }
@@ -1118,7 +1941,7 @@ Algumas opções acabam rápido durante o dia. Se você quiser, eu posso separar
     if(act === "delete"){
       if(confirm(`Excluir "${l.name}"?`)){
         leads.splice(idx,1);
-        persist(); render();
+        persistLeads(); render();
         showToast("Excluído");
         if(!findTopOverdue()){ stopTitleAlert(); stopAlarmLoop(); }
       }
@@ -1127,9 +1950,9 @@ Algumas opções acabam rápido durante o dia. Se você quiser, eu posso separar
   }
 
   // =======================
-  // Remarketing Popup
+  // Remarketing Popup (mantido)
   // =======================
-  function buildTemplateSelect(){
+  function buildRmTemplateSelect(){
     rmTemplate.innerHTML = "";
     RM_TEMPLATES.forEach(t=>{
       const opt = document.createElement("option");
@@ -1139,14 +1962,13 @@ Algumas opções acabam rápido durante o dia. Se você quiser, eu posso separar
     });
   }
 
-  function fillTemplateText(templateText, lead){
-    return templateText.replaceAll("{nome}", lead.name || "{nome}");
-  }
-
-  function waLink(phone, text){
-    const p = cleanPhone(phone);
-    const msg = encodeURIComponent(text || "");
-    return `https://wa.me/55${p}?text=${msg}`;
+  function fillRmTemplateText(templateText, lead){
+    const approxModel = (lead.note || "").match(/iphone\s*\d+[^,]*/i)?.[0] || "{modelo}";
+    const approxDef = (lead.note || "").match(/(tela|bateria|placa|traseira|camera|face id|watch)/i)?.[0] || "{defeito}";
+    return (templateText||"")
+      .replaceAll("{nome}", lead.name || "{nome}")
+      .replaceAll("{modelo}", approxModel)
+      .replaceAll("{defeito}", approxDef);
   }
 
   function openRemarketingPopup(leadId){
@@ -1170,14 +1992,20 @@ Algumas opções acabam rápido durante o dia. Se você quiser, eu posso separar
     `;
 
     let defaultKey = "2h_leve";
-    if(lead.status === "Só obrigado") defaultKey = "dia_seguinte";
-    if(lead.status === "Orçamento enviado") defaultKey = "orcamento";
-    if(lead.category === "Upgrade") defaultKey = "entrada";
+    if(lead.category === "Consertos"){
+      defaultKey = "c_agendar";
+      if(lead.status === "Orçamento enviado") defaultKey = "c_orcamento";
+      if(lead.status === "Só obrigado") defaultKey = "c_sumiu";
+    } else {
+      if(lead.status === "Só obrigado") defaultKey = "dia_seguinte";
+      if(lead.status === "Orçamento enviado") defaultKey = "orcamento";
+      if(lead.category === "Upgrade") defaultKey = "entrada";
+    }
 
     rmTemplate.value = defaultKey;
 
     const t = RM_TEMPLATES.find(x=>x.key === rmTemplate.value) || RM_TEMPLATES[0];
-    rmText.value = fillTemplateText(t.text, lead);
+    rmText.value = fillRmTemplateText(t.text, lead);
     rmWhats.href = waLink(lead.phone, rmText.value);
 
     rmBackdrop.style.display = "flex";
@@ -1185,15 +2013,13 @@ Algumas opções acabam rápido durante o dia. Se você quiser, eu posso separar
     const idx = leads.findIndex(x=>x.id === leadId);
     if(idx >= 0){
       leads[idx].popupShown = true;
-      persist();
+      persistLeads();
     }
   }
 
   function closeRemarketingPopup(){
     rmBackdrop.style.display = "none";
     currentRmLeadId = null;
-
-    // se não existe mais vencido, para alarmes e título
     if(!findTopOverdue()){
       stopTitleAlert();
       stopAlarmLoop();
@@ -1209,7 +2035,7 @@ Algumas opções acabam rápido durante o dia. Se você quiser, eu posso separar
     if(!lead) return;
 
     const t = RM_TEMPLATES.find(x=>x.key === rmTemplate.value) || RM_TEMPLATES[0];
-    rmText.value = fillTemplateText(t.text, lead);
+    rmText.value = fillRmTemplateText(t.text, lead);
     rmWhats.href = waLink(lead.phone, rmText.value);
   });
 
@@ -1228,7 +2054,7 @@ Algumas opções acabam rápido durante o dia. Se você quiser, eu posso separar
     if(idx < 0) return;
 
     leads[idx] = { ...leads[idx], status:"Respondeu", archived:true, notifiedOverdue:false, popupShown:false };
-    persist(); render();
+    persistLeads(); render();
     showToast("Saiu do remarketing ✅");
     closeRemarketingPopup();
   });
@@ -1240,14 +2066,11 @@ Algumas opções acabam rápido durante o dia. Se você quiser, eu posso separar
 
     const now = nowMs();
     leads[idx] = { ...leads[idx], lastAt: now, dueAt: now + 120*60000, notifiedOverdue:false, popupShown:false };
-    persist(); render();
+    persistLeads(); render();
     showToast("Adiado 2h ⏳");
     closeRemarketingPopup();
   });
 
-  // =======================
-  // Overdue finder + alarm
-  // =======================
   function findTopOverdue(){
     const now = nowMs();
     const overdue = leads
@@ -1272,7 +2095,7 @@ Algumas opções acabam rápido durante o dia. Se você quiser, eu posso separar
         const idx = leads.findIndex(x=>x.id === o.id);
         if(idx >= 0) leads[idx].notifiedOverdue = true;
       });
-      persist();
+      persistLeads();
       render();
 
       const top = overdueToNotify[0];
@@ -1298,7 +2121,6 @@ Algumas opções acabam rápido durante o dia. Se você quiser, eu posso separar
     if(top){
       startTitleAlert(`🚨 1 vencido — ${top.name}`);
       startAlarmLoop();
-
       if(rmBackdrop.style.display !== "flex" && !top.popupShown){
         openRemarketingPopup(top.id);
       }
@@ -1307,75 +2129,180 @@ Algumas opções acabam rápido durante o dia. Se você quiser, eu posso separar
       stopAlarmLoop();
     }
   }
-
   setInterval(checkOverdueAndNotify, 30000);
 
   // =======================
-  // Export / Import
+  // Mensagens rápidas: acordeões + busca
   // =======================
-  btnExport.addEventListener("click", ()=>{
-    const payload = JSON.stringify({ exportedAt: new Date().toISOString(), leads }, null, 2);
-    const blob = new Blob([payload], {type:"application/json"});
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "remarketing-leads.json";
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    URL.revokeObjectURL(url);
-    showToast("Exportado ✅");
-  });
+  function templateMatches(t, term){
+    if(!term) return true;
+    const q = term.toLowerCase();
+    const blob = [t.title, ...(t.tags||[]), t.text].join(" ").toLowerCase();
+    return blob.includes(q);
+  }
 
-  btnImport.addEventListener("click", ()=>{
-    const input = document.createElement("input");
-    input.type = "file";
-    input.accept = "application/json";
-    input.onchange = async ()=>{
-      const file = input.files?.[0];
-      if(!file) return;
-      try{
-        const text = await file.text();
-        const obj = JSON.parse(text);
-        const imported = obj.leads || obj;
-        if(!Array.isArray(imported)) throw new Error("Formato inválido");
+  function buildTemplateCard(t, v){
+    const applied = applyVarsToText(t.text, v);
+    const div = document.createElement("div");
+    div.className = "templateCard";
+    div.innerHTML = `
+      <div class="templateTop">
+        <div>
+          <div class="templateTitle">${escapeHtml(t.title)}</div>
+          <div class="templateMeta">${escapeHtml((t.tags||[]).join(" • "))}</div>
+        </div>
+        <div class="actions">
+          <button class="mini primary" data-act="copy">Copiar</button>
+          <button class="mini" data-act="wa">Abrir WhatsApp</button>
+        </div>
+      </div>
+      <div class="templateBody">${escapeHtml(applied)}</div>
+    `;
+    return div;
+  }
 
-        leads = imported.map(x=>({
-          id: x.id || uuid(),
-          name: x.name || "",
-          phone: x.phone || "",
-          category: x.category || "Venda de aparelhos",
-          status: x.status || "Aguardando resposta",
-          lastAt: x.lastAt || nowMs(),
-          dueAt: x.dueAt || (x.lastAt || nowMs()) + 120*60000,
-          note: x.note || "",
-          archived: !!x.archived,
-          notifiedOverdue: !!x.notifiedOverdue,
-          popupShown: !!x.popupShown
-        }));
-        persist(); render();
-        showToast("Importado ✅");
-      }catch(e){
-        showToast("Falha ao importar");
+  function renderAccordion(targetEl, groups, templates, term, v){
+    targetEl.innerHTML = "";
+
+    groups.forEach(g=>{
+      const list = templates
+        .filter(t => t.group === g.key)
+        .filter(t => templateMatches(t, term));
+
+      if(term && list.length === 0) return;
+
+      const details = document.createElement("details");
+      details.style.setProperty("--qcat", g.color);
+      details.open = false; // FECHADO por padrão
+
+      const summary = document.createElement("summary");
+      summary.innerHTML = `
+        <span class="qSumLeft"><span class="qDot"></span>${escapeHtml(g.label)}</span>
+        <span class="qSumRight">${list.length} mensagem(ns)</span>
+      `;
+
+      const panel = document.createElement("div");
+      panel.className = "qPanel";
+
+      if(list.length === 0){
+        panel.innerHTML = `<div class="muted small">Nenhum template nesta categoria.</div>`;
+      } else {
+        list.forEach(t => panel.appendChild(buildTemplateCard(t, v)));
       }
-    };
-    input.click();
+
+      details.appendChild(summary);
+      details.appendChild(panel);
+      targetEl.appendChild(details);
+    });
+  }
+
+  function renderAllQuickAccordions(){
+    const term = (qSearch.value||"").trim();
+    const v = getVars();
+    renderAccordion(salesAccordion, SALES_GROUPS, SALES_TEMPLATES, term, v);
+    renderAccordion(quickAccordion, QUICK_GROUPS, QUICK_TEMPLATES, term, v);
+  }
+
+  // Delegação (copy/wa) para os 2 acordeões
+  function onAccordionClick(e){
+    const btn = e.target.closest("button[data-act]");
+    if(!btn) return;
+
+    const card = btn.closest(".templateCard");
+    const bodyEl = card ? card.querySelector(".templateBody") : null;
+    if(!bodyEl) return;
+
+    const msg = bodyEl.textContent || "";
+
+    if(btn.dataset.act === "copy"){
+      copyText(msg);
+    }
+    if(btn.dataset.act === "wa"){
+      const url = `https://api.whatsapp.com/send?text=${encodeURIComponent(msg)}`;
+      window.open(url, "_blank", "noopener");
+    }
+  }
+  salesAccordion.addEventListener("click", onAccordionClick);
+  quickAccordion.addEventListener("click", onAccordionClick);
+
+  ["input","change"].forEach(evt=>{
+    [
+      qLoja,qAtendente,qNome,qModelo,qDefeito,qObs,
+      qOpcao,qValor,qParcelas,qPrazo,qGarantia,
+      qTelaStandard,qTelaPremium,qTelaOriginal,qTelaTipo,
+      qSearch
+    ].forEach(node=> node.addEventListener(evt, renderAllQuickAccordions));
   });
+
+  qSaveVars.addEventListener("click", ()=>{
+    persistQuickVars(getVars());
+    showToast("Variáveis salvas ✅");
+  });
+
+  qResetVars.addEventListener("click", ()=>{
+    if(confirm("Limpar variáveis?")){
+      qLoja.value = "Consultório do iPhone";
+      qAtendente.value = "";
+      qNome.value = "";
+      qModelo.value = "";
+      qDefeito.value = "";
+      qObs.value = "";
+
+      qOpcao.value = "";
+      qValor.value = "";
+      qParcelas.value = "";
+      qPrazo.value = "";
+      qGarantia.value = "";
+
+      qTelaStandard.value = "";
+      qTelaPremium.value = "";
+      qTelaOriginal.value = "";
+      qTelaTipo.value = "";
+
+      persistQuickVars(getVars());
+      renderAllQuickAccordions();
+      showToast("Variáveis limpas");
+    }
+  });
+
+  function hydrateQuickVars(){
+    const v = loadQuickVars();
+    if(!v) return;
+
+    qLoja.value = v.loja_nome || "Consultório do iPhone";
+    qAtendente.value = (v.atendente && v.atendente !== "{atendente}") ? v.atendente : "";
+    qNome.value = (v.nome && v.nome !== "{nome}") ? v.nome : "";
+    qModelo.value = (v.modelo && v.modelo !== "{modelo}") ? v.modelo : "";
+    qDefeito.value = (v.defeito && v.defeito !== "{defeito}") ? v.defeito : "";
+    qObs.value = (v.obs && v.obs !== "-") ? v.obs : "";
+
+    qOpcao.value = (v.opcao && v.opcao !== "{opcao}") ? v.opcao : "";
+    qValor.value = (v.valor && v.valor !== "{valor}") ? v.valor : "";
+    qParcelas.value = (v.parcelas && v.parcelas !== "{parcelas}") ? v.parcelas : "";
+    qPrazo.value = (v.prazo && v.prazo !== "{prazo}") ? v.prazo : "";
+    qGarantia.value = (v.garantia && v.garantia !== "{garantia}") ? v.garantia : "";
+
+    qTelaStandard.value = (v.tela_standard_valor && v.tela_standard_valor !== "{tela_standard_valor}") ? v.tela_standard_valor : "";
+    qTelaPremium.value = (v.tela_premium_valor && v.tela_premium_valor !== "{tela_premium_valor}") ? v.tela_premium_valor : "";
+    qTelaOriginal.value = (v.tela_original_valor && v.tela_original_valor !== "{tela_original_valor}") ? v.tela_original_valor : "";
+  }
 
   // =======================
   // Init
   // =======================
-  function initTemplates(){ buildTemplateSelect(); }
+  function init(){
+    buildRmTemplateSelect();
+    hydrateQuickVars();
+    renderAllQuickAccordions();
 
-  function resetFormInit(){
     resetForm();
-    initTemplates();
     render();
-    // checa logo ao abrir
-    setTimeout(checkOverdueAndNotify, 600);
-  }
 
-  resetFormInit();
+    setTimeout(checkOverdueAndNotify, 600);
+
+    setTab("mensagens");
+  }
+  init();
 </script>
 </body>
 </html>
