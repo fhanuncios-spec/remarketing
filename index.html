@@ -474,130 +474,61 @@
       <div class="grid" style="grid-template-columns: 1fr;">
         <div class="panel">
           <div class="twoCols">
-            <!-- COL 1: Variáveis -->
+            <!-- COL 1: Variáveis (AGORA EM ABA FECHADA POR PADRÃO) -->
             <div>
-              <div class="sectionTitle">
-                <h2>Variáveis (edite e copie pronto)</h2>
-                <button class="mini" id="qSaveVars">Salvar</button>
-              </div>
-
-              <div class="row">
-                <div>
-                  <label class="small muted">Loja</label>
-                  <select id="qLoja">
-                    <option value="Consultório do iPhone">Consultório do iPhone</option>
-                    <option value="Brunão do iPhone">Brunão do iPhone</option>
-                  </select>
-                </div>
-                <div>
-                  <label class="small muted">Atendente</label>
-                  <input id="qAtendente" placeholder="Ex: Raquel" />
-                </div>
-              </div>
-
-              <div class="row">
-                <div>
-                  <label class="small muted">Nome do cliente</label>
-                  <input id="qNome" placeholder="Ex: Ana" />
-                </div>
-                <div>
-                  <label class="small muted">Modelo</label>
-                  <input id="qModelo" placeholder="Ex: iPhone 13 Pro Max" />
-                </div>
-              </div>
-
-              <div class="row">
-                <div>
-                  <label class="small muted">Defeito / Serviço</label>
-                  <input id="qDefeito" placeholder="Ex: troca de tela / bateria / placa" />
-                </div>
-                <div>
-                  <label class="small muted">Observação extra (opcional)</label>
-                  <input id="qObs" placeholder="Ex: precisa senha de tela p/ testes" />
-                </div>
-              </div>
-
-              <div class="divider"></div>
-
-              <details open>
+              <details id="varsDetails">
                 <summary>
-                  <span class="sumLeft"><span class="badgeColor" style="background:var(--cat-conserto)"></span>Orçamento rápido (geral)</span>
+                  <span class="sumLeft"><span class="badgeColor" style="background:var(--cat-conserto)"></span>Variáveis (edite e copie pronto)</span>
                   <span class="muted small">toque</span>
                 </summary>
                 <div class="content">
-                  <div class="row">
-                    <div>
-                      <label class="small muted">Opção / Peça</label>
-                      <input id="qOpcao" placeholder="Ex: Tela Premium Oled" />
-                    </div>
-                    <div>
-                      <label class="small muted">Valor (R$)</label>
-                      <input id="qValor" placeholder="Ex: 399,90" inputmode="decimal" />
-                    </div>
-                  </div>
-
-                  <div class="row">
-                    <div>
-                      <label class="small muted">Parcelas</label>
-                      <input id="qParcelas" placeholder="Ex: até 6x sem juros" />
-                    </div>
-                    <div>
-                      <label class="small muted">Prazo</label>
-                      <input id="qPrazo" placeholder="Ex: 1h / 2h / 3 a 6 dias úteis" />
-                    </div>
-                  </div>
-
-                  <div class="row">
-                    <div>
-                      <label class="small muted">Garantia</label>
-                      <input id="qGarantia" placeholder="Ex: 3 meses" />
-                    </div>
-                    <div>
-                      <label class="small muted">Ação rápida</label>
+                  <div class="sectionTitle" style="margin:0 0 10px 0">
+                    <h2 style="margin:0">Variáveis</h2>
+                    <div class="actions">
+                      <button class="mini" id="qSaveVars">Salvar</button>
                       <button class="mini" id="qResetVars">Limpar variáveis</button>
                     </div>
                   </div>
 
-                  <div class="hint">Essas variáveis são usadas nos templates.</div>
-                </div>
-              </details>
-
-              <details>
-                <summary>
-                  <span class="sumLeft"><span class="badgeColor" style="background:var(--warn)"></span>Telas: valores (Standard / Premium / Original)</span>
-                  <span class="muted small">toque</span>
-                </summary>
-                <div class="content">
                   <div class="row">
                     <div>
-                      <label class="small muted">Tela Standard (R$)</label>
-                      <input id="qTelaStandard" placeholder="Ex: 899,90" inputmode="decimal" />
-                    </div>
-                    <div>
-                      <label class="small muted">Tela Premium Oled (R$)</label>
-                      <input id="qTelaPremium" placeholder="Ex: 1299,90" inputmode="decimal" />
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div>
-                      <label class="small muted">Tela Original (R$)</label>
-                      <input id="qTelaOriginal" placeholder="Ex: 1999,90" inputmode="decimal" />
-                    </div>
-                    <div>
-                      <label class="small muted">Selecionar tipo (auto preenche Opção/Valor)</label>
-                      <select id="qTelaTipo">
-                        <option value="">— selecione —</option>
-                        <option value="standard">Standard</option>
-                        <option value="premium">Premium Oled</option>
-                        <option value="original">Original</option>
+                      <label class="small muted">Loja</label>
+                      <select id="qLoja">
+                        <option value="Consultório do iPhone">Consultório do iPhone</option>
+                        <option value="Brunão do iPhone">Brunão do iPhone</option>
                       </select>
                     </div>
+                    <div>
+                      <label class="small muted">Atendente</label>
+                      <input id="qAtendente" placeholder="Ex: Raquel" />
+                    </div>
                   </div>
-                  <div class="hint">Escolheu o tipo → preenche <b>Opção/Valor</b>.</div>
+
+                  <div class="row">
+                    <div>
+                      <label class="small muted">Nome do cliente</label>
+                      <input id="qNome" placeholder="Ex: Ana" />
+                    </div>
+                    <div>
+                      <label class="small muted">Modelo</label>
+                      <input id="qModelo" placeholder="Ex: iPhone 13 Pro Max" />
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div>
+                      <label class="small muted">Defeito / Serviço</label>
+                      <input id="qDefeito" placeholder="Ex: troca de tela / bateria / placa" />
+                    </div>
+                    <div>
+                      <label class="small muted">Observação extra (opcional)</label>
+                      <input id="qObs" placeholder="Ex: precisa senha de tela p/ testes" />
+                    </div>
+                  </div>
+
+                  <div class="hint">As variáveis ficam salvas no seu aparelho (localStorage).</div>
                 </div>
               </details>
-
-              <div class="hint">As variáveis ficam salvas no seu aparelho (localStorage).</div>
             </div>
 
             <!-- COL 2: Mensagens rápidas (Vendas + Consertos) -->
@@ -791,7 +722,7 @@
   // Keys
   // =======================
   const STORAGE_KEY = "remarketing_leads_unificado_v1";
-  const QUICK_VARS_KEY = "quick_vars_consertos_v2";
+  const QUICK_VARS_KEY = "quick_vars_consertos_v3"; // atualizado
 
   // =======================
   // Model
@@ -870,7 +801,7 @@ Passando rapidinho: se ainda quiser resolver o {defeito} do seu {modelo}, eu con
   ];
 
   // =======================
-  // Templates: Mensagens rápidas (Vendas/Upgrade) - SUBSTITUÍDAS pelas que você mandou
+  // Templates: Mensagens rápidas (Vendas/Upgrade)
   // =======================
   const SALES_TEMPLATES = [
     // ATENDIMENTO
@@ -932,8 +863,8 @@ Como você prefere que eu ajuste pra dar certo?` },
 Quer que eu reserve no seu nome por um tempinho, ou prefere que eu te chame se entrar outra opção melhor?` },
 
     // UPGRADE
-    { id:"s_u_01", group:"s_upgrade", title:"Pedir permissão (questionário da entrada)", tags:["upgrade","entrada","questionário"],
-      text:`Para dar seu aparelho como entrada, preciso que responda um pequeno questionário para avaliarmos quanto ficaria a diferença. Posso estar enviando para você? 🙂` },
+    { id:"s_u_01", group:"s_upgrade", title:"Upgrade — entrada (qual iPhone dá e qual quer)", tags:["upgrade","entrada","troca"],
+      text:`Pode sim, qual iPhone você gostaria de dar como entrada e qual você gostaria de adquirir ? :)` },
 
     { id:"s_u_02", group:"s_upgrade", title:"Formulário completo de avaliação", tags:["upgrade","avaliação","formulário"],
       text:`Poderia preencher esse formulário para avaliação do seu aparelho? 😁
@@ -975,26 +906,30 @@ Nossa equipe realizou a avaliação dos dados informados, mas infelizmente não 
 Mas você ainda tem outras opções, como vender para amigos, conhecidos e marketplaces, podendo conseguir uma boa quantia e dar de entrada para comprar seu aparelho. 🙂` },
 
     // FECHAMENTO
-    { id:"s_f_01", group:"s_fechamento", title:"Fechamento (2 escolhas simples)", tags:["fechamento","retirada","entrega","pagamento"],
-      text:`Fechado, {nome}! ✅
-Pra finalizar do jeito mais fácil:
-Você prefere:
-1) Retirar na loja, ou
-2) Entrega (motoboy / ponto combinado)
+    { id:"s_f_01", group:"s_fechamento", title:"Fechamento Dados da Nota", tags:["dados","fechamento","venda","pedido"],
+      text:`Certo , peço que preencha estes dados para realizarmos a encomenda.☺️
 
-E vai ser à vista ou no cartão?` },
+Nome: 
+CPF: 
+CEP: 
+Rua: 
+Número:
+Bairro:
+Cidade:
+Estado: 
+Complemento: opcional
+Telefone: opcional
+Método de pagamento (não aceitamos link de pagamento): 
 
-    { id:"s_f_02", group:"s_fechamento", title:"PIX (reservar no nome do cliente)", tags:["fechamento","pix","reserva"],
-      text:`No PIX fica {valor}. ✅
-Se quiser, eu te passo a chave ({pix}) e já deixo reservado no seu nome, {nome}.` },
+Produto:  (Não é necessário)
+Imei: (Não é necessário)
 
-    { id:"s_f_03", group:"s_fechamento", title:"Mensagem resumo pra encaminhar", tags:["fechamento","resumo","encaminhar"],
-      text:`Resumo rápido ✅
-📱 {modelo} {capacidade} {cor}
-💰 {valor} à vista | parcelamento disponível
-🧾 Nota fiscal no nome do cliente
-🛡️ Garantia de 1 ano
-Se quiser, eu reservo no seu nome por um tempinho.` },
+Valor: (Não é necessário)
+Data:  (Não é necessário)` },
+
+    { id:"s_f_02", group:"s_fechamento", title:"Entrega Shopping", tags:["fechamento","entrega","shopping","delivery"],
+      text:`Para sua segurança e a nossa, nosso motoboy realiza entregas apenas em shoppings.
+Pode me informar qual o shopping mais próximo de você? Assim verifico a disponibilidade para entrega 😊` },
 
     // PÓS VENDA
     { id:"s_p_01", group:"s_posvenda", title:"Pós-venda (confirmar recebimento + suporte)", tags:["pós-venda","suporte","configuração"],
@@ -1061,9 +996,14 @@ Se me disser o que você prioriza (economia, câmera ou bateria), eu te recomend
     { id:"c_ini", group:"con_geral", title:"Início de atendimento", tags:["inicio","atendimento","consertos"],
       text:`Olá {nome}, tudo bem? 😊
 Eu me chamo {atendente} e sou especialista da {loja_nome}. Vou dar prosseguimento com seu atendimento.`},
+
+    { id:"c_incidente", group:"con_geral", title:"Perguntar incidente (queda/líquido/reparo)", tags:["incidente","queda","líquido","reparo"],
+      text:`Certo, houve algum incidente antes de ficar assim ? (queda, contato com liquido, feito algum reparo,etc)`},
+
     { id:"c_pedir_modelo_defeito", group:"con_geral", title:"Pedir modelo e defeito (se não enviou)", tags:["qualificacao","modelo","defeito"],
       text:`Perfeito, {nome}! 😊
 Qual é o modelo do seu iPhone e qual defeito ele está apresentando?`},
+
     { id:"c_orc_padrao", group:"con_geral", title:"Orçamento (padrão)", tags:["orcamento","padrao","agendar"],
       text:`🔧 {defeito} — {modelo}
 💰 R$ {valor} | {parcelas}
@@ -1080,6 +1020,7 @@ Qual é o modelo do seu iPhone e qual defeito ele está apresentando?`},
       text:`Certo, {nome}! Sobre a tela do seu {modelo}:
 Ela está trincada, apagada ou com manchas?
 E você sabe dizer se a tela é original?`},
+
     { id:"c_telas_3_opcoes", group:"con_tela", title:"Tela — 3 opções (Standard / Premium / Original)", tags:["tela","opcoes","standard","oled","original"],
       text:`Para o reparo do seu {modelo} trabalhamos com três opções de tela, todas com 3 meses de garantia e instalação feita em até 1h com agendamento prévio:
 
@@ -1099,6 +1040,10 @@ obs: O iPhone exibirá uma mensagem nos Ajustes informando que a tela foi substi
 As telas Standard e Premium tem um aumento no consumo da bateria.`},
 
     // Bateria (2 mensagens)
+
+   { id:"c_bat_com_msg", group:"con_bateria", title:"Motivo da troca", tags:["bateria"," motivo","saude"],
+      text:`Certo, você deseja trocar sua bateria por qual motivo ? (descarregamento rápido, saúde da bateria ruim, estufamento)`},
+
     { id:"c_bat_sem_msg", group:"con_bateria", title:"Bateria — sem mensagem (iOS18 aviso)", tags:["bateria","ios18","aviso","premium"],
       text:`A troca da bateria do seu {modelo} fica em R$399,90.
 
@@ -1115,6 +1060,7 @@ Esse aviso é apenas informativo, não interfere no desempenho, e a saúde da ba
 Se preferir, há a opção de realizar o procedimento com tentativa de não exibir esse aviso, mediante reset do aparelho com cerca de 90% de taxa de sucesso. ☑️
 
 Fico à disposição para agendar quando for melhor para você.`},
+
     { id:"c_bat_com_msg", group:"con_bateria", title:"Bateria — com mensagem (peça desconhecida)", tags:["bateria","peça desconhecida","saude 100%"],
       text:`Troca de bateria – {modelo}
 💰 R$ 289,90 | até 6x sem juros
@@ -1141,6 +1087,7 @@ Devido estar danificado ele não tem mais a resistência à água e garantia App
 Requer a senha de tela para realizar os testes.
 
 💬 Quer agendar para hoje?`},
+
     { id:"c_vidro_tampa", group:"con_traseira", title:"Vidro traseiro — tampa completa", tags:["vidro traseiro","tampa","2h"],
       text:`Troca do vidro traseiro – {modelo}
 💰 R$ 799,90 | até 6x sem juros
@@ -1150,6 +1097,16 @@ Devido estar danificado ele não tem mais a resistência à água e garantia App
 Requer a senha de tela para realizar os testes.`},
 
     // Outros
+
+{ id:"c_placa_valor", group:"con_outros", title:"Serviço de Coleta", tags:["delivery","coleta"],
+      text:`Temos serviço de coleta e entrega!
+Retiramos o aparelho na sua residência, trazemos para o reparo e depois devolvemos pronto para você.
+
+A taxa de coleta é a partir de R$30, e o valor pode variar de acordo com a localidade.
+
+Me diz seu endereço certinho que já vejo para você.😊`},
+
+
     { id:"c_placa_valor", group:"con_outros", title:"Reparo de placa — orçamento", tags:["placa","reparo","3 a 6 dias","sucesso"],
       text:`reparo de placa – {modelo}
 💰 R$ 900,00 | até 6x sem juros
@@ -1221,10 +1178,12 @@ Feito em até 1h.`},
       text:`Oi {nome}! 😊
 Conseguiu ver o orçamento do seu {modelo}?
 Se quiser, me diz se prefere resolver hoje ou agendar um horário que eu deixo tudo pronto pra você.`},
+
     { id:"crm_agendar", group:"con_remarketing", title:"RM — vamos agendar?", tags:["remarketing","agendar"],
       text:`Oi {nome}! 😊
 Quer que eu já agende o conserto do seu {modelo}?
 Me diga só o melhor horário (manhã/tarde/noite) que eu encaixo pra você.`},
+
     { id:"crm_sumiu", group:"con_remarketing", title:"RM — sumiu (sem cobrança)", tags:["remarketing","sumiu"],
       text:`Oi {nome}! 😊
 Passando rapidinho: se ainda quiser resolver o {defeito} do seu {modelo}, eu consigo te orientar e agendar sem você precisar esperar na loja.`
@@ -1300,17 +1259,6 @@ Passando rapidinho: se ainda quiser resolver o {defeito} do seu {modelo}, eu con
   const qModelo = el("qModelo");
   const qDefeito = el("qDefeito");
   const qObs = el("qObs");
-
-  const qOpcao = el("qOpcao");
-  const qValor = el("qValor");
-  const qParcelas = el("qParcelas");
-  const qPrazo = el("qPrazo");
-  const qGarantia = el("qGarantia");
-
-  const qTelaStandard = el("qTelaStandard");
-  const qTelaPremium = el("qTelaPremium");
-  const qTelaOriginal = el("qTelaOriginal");
-  const qTelaTipo = el("qTelaTipo");
 
   const qSaveVars = el("qSaveVars");
   const qResetVars = el("qResetVars");
@@ -1498,15 +1446,7 @@ Passando rapidinho: se ainda quiser resolver o {defeito} do seu {modelo}, eu con
       nome: (qNome.value||"").trim() || "{nome}",
       modelo: (qModelo.value||"").trim() || "{modelo}",
       defeito: (qDefeito.value||"").trim() || "{defeito}",
-      opcao: (qOpcao.value||"").trim() || "{opcao}",
-      valor: (qValor.value||"").trim() || "{valor}",
-      parcelas: (qParcelas.value||"").trim() || "{parcelas}",
-      prazo: (qPrazo.value||"").trim() || "{prazo}",
-      garantia: (qGarantia.value||"").trim() || "{garantia}",
       obs: (qObs.value||"").trim() || "-",
-      tela_standard_valor: (qTelaStandard.value||"").trim() || "{tela_standard_valor}",
-      tela_premium_valor: (qTelaPremium.value||"").trim() || "{tela_premium_valor}",
-      tela_original_valor: (qTelaOriginal.value||"").trim() || "{tela_original_valor}",
     };
   }
 
@@ -1517,32 +1457,8 @@ Passando rapidinho: se ainda quiser resolver o {defeito} do seu {modelo}, eu con
       .replaceAll("{nome}", v.nome)
       .replaceAll("{modelo}", v.modelo)
       .replaceAll("{defeito}", v.defeito)
-      .replaceAll("{opcao}", v.opcao)
-      .replaceAll("{valor}", v.valor)
-      .replaceAll("{parcelas}", v.parcelas)
-      .replaceAll("{prazo}", v.prazo)
-      .replaceAll("{garantia}", v.garantia)
-      .replaceAll("{obs}", v.obs)
-      .replaceAll("{tela_standard_valor}", v.tela_standard_valor)
-      .replaceAll("{tela_premium_valor}", v.tela_premium_valor)
-      .replaceAll("{tela_original_valor}", v.tela_original_valor);
+      .replaceAll("{obs}", v.obs);
   }
-
-  // Auto preencher Opção/Valor ao selecionar tipo de tela
-  qTelaTipo.addEventListener("change", ()=>{
-    const v = getVars();
-    if(qTelaTipo.value === "standard"){
-      qOpcao.value = "Tela Standard";
-      qValor.value = (v.tela_standard_valor || "").replace("{tela_standard_valor}","");
-    }else if(qTelaTipo.value === "premium"){
-      qOpcao.value = "Tela Premium Oled";
-      qValor.value = (v.tela_premium_valor || "").replace("{tela_premium_valor}","");
-    }else if(qTelaTipo.value === "original"){
-      qOpcao.value = "Tela Original";
-      qValor.value = (v.tela_original_valor || "").replace("{tela_original_valor}","");
-    }
-    renderAllQuickAccordions();
-  });
 
   // =======================
   // Alarmes / Notificações (mantidos)
@@ -2228,8 +2144,6 @@ Passando rapidinho: se ainda quiser resolver o {defeito} do seu {modelo}, eu con
   ["input","change"].forEach(evt=>{
     [
       qLoja,qAtendente,qNome,qModelo,qDefeito,qObs,
-      qOpcao,qValor,qParcelas,qPrazo,qGarantia,
-      qTelaStandard,qTelaPremium,qTelaOriginal,qTelaTipo,
       qSearch
     ].forEach(node=> node.addEventListener(evt, renderAllQuickAccordions));
   });
@@ -2248,17 +2162,6 @@ Passando rapidinho: se ainda quiser resolver o {defeito} do seu {modelo}, eu con
       qDefeito.value = "";
       qObs.value = "";
 
-      qOpcao.value = "";
-      qValor.value = "";
-      qParcelas.value = "";
-      qPrazo.value = "";
-      qGarantia.value = "";
-
-      qTelaStandard.value = "";
-      qTelaPremium.value = "";
-      qTelaOriginal.value = "";
-      qTelaTipo.value = "";
-
       persistQuickVars(getVars());
       renderAllQuickAccordions();
       showToast("Variáveis limpas");
@@ -2275,16 +2178,6 @@ Passando rapidinho: se ainda quiser resolver o {defeito} do seu {modelo}, eu con
     qModelo.value = (v.modelo && v.modelo !== "{modelo}") ? v.modelo : "";
     qDefeito.value = (v.defeito && v.defeito !== "{defeito}") ? v.defeito : "";
     qObs.value = (v.obs && v.obs !== "-") ? v.obs : "";
-
-    qOpcao.value = (v.opcao && v.opcao !== "{opcao}") ? v.opcao : "";
-    qValor.value = (v.valor && v.valor !== "{valor}") ? v.valor : "";
-    qParcelas.value = (v.parcelas && v.parcelas !== "{parcelas}") ? v.parcelas : "";
-    qPrazo.value = (v.prazo && v.prazo !== "{prazo}") ? v.prazo : "";
-    qGarantia.value = (v.garantia && v.garantia !== "{garantia}") ? v.garantia : "";
-
-    qTelaStandard.value = (v.tela_standard_valor && v.tela_standard_valor !== "{tela_standard_valor}") ? v.tela_standard_valor : "";
-    qTelaPremium.value = (v.tela_premium_valor && v.tela_premium_valor !== "{tela_premium_valor}") ? v.tela_premium_valor : "";
-    qTelaOriginal.value = (v.tela_original_valor && v.tela_original_valor !== "{tela_original_valor}") ? v.tela_original_valor : "";
   }
 
   // =======================
@@ -2293,6 +2186,11 @@ Passando rapidinho: se ainda quiser resolver o {defeito} do seu {modelo}, eu con
   function init(){
     buildRmTemplateSelect();
     hydrateQuickVars();
+
+    // Variáveis: fechado por padrão
+    const varsDetails = document.getElementById("varsDetails");
+    if(varsDetails) varsDetails.open = false;
+
     renderAllQuickAccordions();
 
     resetForm();
