@@ -37,6 +37,7 @@
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Helvetica Neue", sans-serif;
       background: linear-gradient(180deg, #fbfcff 0%, var(--bg) 40%, #f3f6ff 100%);
       color:var(--text);
+      overflow-x:hidden; /* garante zero arrasto lateral */
     }
 
     header{
@@ -45,7 +46,7 @@
       backdrop-filter: blur(10px);
       border-bottom:1px solid var(--line);
     }
-    .wrap{max-width:1100px; margin:0 auto; padding:14px 14px}
+    .wrap{max-width:900px; margin:0 auto; padding:14px 14px}
     .top{
       display:flex; gap:10px; flex-wrap:wrap;
       align-items:flex-end; justify-content:space-between;
@@ -68,6 +69,7 @@
       outline:none;
       font-size:13px;
       color:var(--text);
+      max-width:100%;
     }
     textarea{min-height:90px; resize:vertical}
     input::placeholder{color:#9ca3af}
@@ -89,6 +91,7 @@
       align-items:center;
       justify-content:center;
       gap:6px;
+      max-width:100%;
     }
     .btn.primary{
       background: var(--accent);
@@ -119,6 +122,7 @@
       font-size:12px;
       color:var(--muted);
       user-select:none;
+      max-width:100%;
     }
     .tab.active{
       background: rgba(37,99,235,.08);
@@ -129,13 +133,11 @@
 
     main .wrap{padding-top:14px; padding-bottom:28px}
 
+    /* ✅ SEM COLUNAS LADO A LADO: sempre 1 coluna */
     .grid{
       display:grid;
       grid-template-columns: 1fr;
       gap:12px;
-    }
-    @media (min-width: 900px){
-      .grid{grid-template-columns: 420px 1fr;}
     }
 
     .panel{
@@ -144,6 +146,8 @@
       border-radius: var(--radius);
       box-shadow: var(--shadow);
       padding:12px;
+      max-width:100%;
+      overflow:hidden;
     }
     .panel h2{
       margin:0 0 10px 0;
@@ -190,7 +194,12 @@
       border-radius: 14px;
       border:1px solid var(--line);
       background:#fff;
+      max-width:100%;
+      display:block;       /* evita estourar horizontal */
+      overflow-x:auto;     /* se precisar, rola só a tabela (não a página) */
+      -webkit-overflow-scrolling: touch;
     }
+    thead, tbody, tr{display:table; width:100%; table-layout:fixed;}
     thead th{
       text-align:left;
       font-size:12px;
@@ -207,6 +216,7 @@
       font-size:13px;
       border-bottom:1px solid var(--line);
       vertical-align:top;
+      word-wrap:break-word;
     }
     tbody tr:last-child td{border-bottom:none}
 
@@ -220,6 +230,7 @@
       background:#f9fafb;
       font-size:12px;
       white-space:nowrap;
+      max-width:100%;
     }
     .dot{width:10px; height:10px; border-radius:999px; background: #cbd5e1}
 
@@ -237,6 +248,7 @@
 
     .actions{
       display:flex; gap:8px; flex-wrap:wrap;
+      max-width:100%;
     }
     .mini{
       padding:8px 10px;
@@ -245,6 +257,7 @@
       background:#fff;
       cursor:pointer;
       font-size:12px;
+      max-width:100%;
     }
     .mini.primary{
       background: rgba(37,99,235,.08);
@@ -319,6 +332,7 @@
       display:inline-flex;
       align-items:center;
       gap:6px;
+      max-width:100%;
     }
     .chip strong{color:var(--text)}
 
@@ -330,9 +344,11 @@
       background:#fff;
       margin-bottom:10px;
       box-shadow: 0 6px 18px rgba(17,24,39,.05);
+      max-width:100%;
     }
     .templateTop{
       display:flex; align-items:flex-start; justify-content:space-between; gap:10px; flex-wrap:wrap;
+      max-width:100%;
     }
     .templateTitle{font-weight:900; font-size:13px; margin:0}
     .templateMeta{font-size:12px; color:var(--muted); margin-top:2px}
@@ -344,20 +360,22 @@
       background:#fbfcff;
       font-size:13px;
       margin-top:10px;
+      max-width:100%;
+      overflow-wrap:anywhere;
     }
 
+    /* ✅ SEM 2 COLUNAS: sempre 1 coluna */
     .twoCols{
       display:grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr;
       gap:10px;
-    }
-    @media (max-width: 720px){
-      .twoCols{grid-template-columns:1fr;}
+      max-width:100%;
     }
 
     .sectionTitle{
       display:flex; align-items:center; justify-content:space-between; gap:8px;
       margin:0 0 8px 0;
+      flex-wrap:wrap;
     }
     .sectionTitle h2{margin:0; font-size:13px; font-weight:900}
     .divider{height:1px;background:var(--line);margin:10px 0}
@@ -369,6 +387,7 @@
       overflow:hidden;
       box-shadow: 0 6px 18px rgba(17,24,39,.05);
       margin-bottom:10px;
+      max-width:100%;
     }
     summary{
       list-style:none;
@@ -380,6 +399,7 @@
       gap:10px;
       font-weight:900;
       font-size:13px;
+      max-width:100%;
     }
     summary::-webkit-details-marker{display:none}
     .sumLeft{display:flex; align-items:center; gap:10px}
@@ -392,6 +412,7 @@
       flex-direction:column;
       gap:10px;
       margin-top:10px;
+      max-width:100%;
     }
     .qAccordion details{
       border:1px solid var(--line);
@@ -474,20 +495,18 @@
       <div class="grid" style="grid-template-columns: 1fr;">
         <div class="panel">
           <div class="twoCols">
-            <!-- COL 1: Variáveis (AGORA EM ABA FECHADA POR PADRÃO) -->
+
+            <!-- Variáveis (AGORA FECHADO POR PADRÃO) -->
             <div>
               <details id="varsDetails">
                 <summary>
-                  <span class="sumLeft"><span class="badgeColor" style="background:var(--cat-conserto)"></span>Variáveis (edite e copie pronto)</span>
-                  <span class="muted small">toque</span>
+                  <span class="sumLeft"><span class="badgeColor" style="background:var(--cat-upgrade)"></span>Variáveis (toque para abrir)</span>
+                  <span class="muted small">fechado</span>
                 </summary>
                 <div class="content">
-                  <div class="sectionTitle" style="margin:0 0 10px 0">
-                    <h2 style="margin:0">Variáveis</h2>
-                    <div class="actions">
-                      <button class="mini" id="qSaveVars">Salvar</button>
-                      <button class="mini" id="qResetVars">Limpar variáveis</button>
-                    </div>
+                  <div class="sectionTitle">
+                    <h2>Variáveis (edite e copie pronto)</h2>
+                    <button class="mini" id="qSaveVars">Salvar</button>
                   </div>
 
                   <div class="row">
@@ -526,12 +545,45 @@
                     </div>
                   </div>
 
+                  <!-- ✅ Mantemos os campos úteis (mas SEM a seção "Orçamento rápido") -->
+                  <div class="divider"></div>
+
+                  <div class="row">
+                    <div>
+                      <label class="small muted">Valor (R$)</label>
+                      <input id="qValor" placeholder="Ex: 399,90" inputmode="decimal" />
+                    </div>
+                    <div>
+                      <label class="small muted">Parcelas</label>
+                      <input id="qParcelas" placeholder="Ex: até 6x sem juros" />
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div>
+                      <label class="small muted">Prazo</label>
+                      <input id="qPrazo" placeholder="Ex: 1h / 2h / 3 a 6 dias úteis" />
+                    </div>
+                    <div>
+                      <label class="small muted">Garantia</label>
+                      <input id="qGarantia" placeholder="Ex: 3 meses" />
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div>
+                      <label class="small muted">Ação rápida</label>
+                      <button class="mini" id="qResetVars">Limpar variáveis</button>
+                    </div>
+                    <div></div>
+                  </div>
+
                   <div class="hint">As variáveis ficam salvas no seu aparelho (localStorage).</div>
                 </div>
               </details>
             </div>
 
-            <!-- COL 2: Mensagens rápidas (Vendas + Consertos) -->
+            <!-- Mensagens rápidas -->
             <div>
               <div class="sectionTitle">
                 <h2>Mensagens rápidas</h2>
@@ -722,7 +774,7 @@
   // Keys
   // =======================
   const STORAGE_KEY = "remarketing_leads_unificado_v1";
-  const QUICK_VARS_KEY = "quick_vars_consertos_v3"; // atualizado
+  const QUICK_VARS_KEY = "quick_vars_consertos_v3"; // bump por mudança de campos
 
   // =======================
   // Model
@@ -862,9 +914,24 @@ Como você prefere que eu ajuste pra dar certo?` },
       text:`Claro, {nome} 😊
 Quer que eu reserve no seu nome por um tempinho, ou prefere que eu te chame se entrar outra opção melhor?` },
 
-    // UPGRADE
-    { id:"s_u_01", group:"s_upgrade", title:"Upgrade — entrada (qual iPhone dá e qual quer)", tags:["upgrade","entrada","troca"],
+ { id:"s_o_06", group:"s_objecoes", title:"Qual saude da bateria?", tags:["objeção","bateria saude"],
+      text:`Ótima pergunta 😊
+
+Nossos iPhones seminovos trabalham com saúde de bateria entre 90% e 100%, ou seja, estão em excelente estado de conservação.
+
+A partir de 90% o aparelho ainda mantém ótimo desempenho e autonomia de bateria, funcionando tranquilamente para o dia a dia sem perda significativa de rendimento.
+
+Além disso, todos os aparelhos passam por testes rigorosos, então você recebe um iPhone 100% funcional, revisado e pronto para uso.
+
+Se a saúde da bateria for um ponto muito importante para você, posso verificar uma unidade mais próxima de 100% também 🙌📱
+` },
+
+    // UPGRADE (✅ adicionada)
+    { id:"s_u_00", group:"s_upgrade", title:"Entrada/Upgrade — primeira pergunta", tags:["upgrade","entrada","troca"],
       text:`Pode sim, qual iPhone você gostaria de dar como entrada e qual você gostaria de adquirir ? :)` },
+
+    { id:"s_u_01", group:"s_upgrade", title:"Pedir permissão (questionário da entrada)", tags:["upgrade","entrada","questionário"],
+      text:`Para dar seu aparelho como entrada, preciso que responda um pequeno questionário para avaliarmos quanto ficaria a diferença. Posso estar enviando para você? 🙂` },
 
     { id:"s_u_02", group:"s_upgrade", title:"Formulário completo de avaliação", tags:["upgrade","avaliação","formulário"],
       text:`Poderia preencher esse formulário para avaliação do seu aparelho? 😁
@@ -906,8 +973,8 @@ Nossa equipe realizou a avaliação dos dados informados, mas infelizmente não 
 Mas você ainda tem outras opções, como vender para amigos, conhecidos e marketplaces, podendo conseguir uma boa quantia e dar de entrada para comprar seu aparelho. 🙂` },
 
     // FECHAMENTO
-    { id:"s_f_01", group:"s_fechamento", title:"Fechamento Dados da Nota", tags:["dados","fechamento","venda","pedido"],
-      text:`Certo , peço que preencha estes dados para realizarmos a encomenda.☺️
+    { id:"s_f_01", group:"s_fechamento", title:"Fazer o pedido", tags:["fechamento","pedido","entrega","pagamento"],
+      text:`Certo, peço que preencha estes dados para realizarmos a encomenda.☺️
 
 Nome: 
 CPF: 
@@ -927,9 +994,23 @@ Imei: (Não é necessário)
 Valor: (Não é necessário)
 Data:  (Não é necessário)` },
 
-    { id:"s_f_02", group:"s_fechamento", title:"Entrega Shopping", tags:["fechamento","entrega","shopping","delivery"],
-      text:`Para sua segurança e a nossa, nosso motoboy realiza entregas apenas em shoppings.
-Pode me informar qual o shopping mais próximo de você? Assim verifico a disponibilidade para entrega 😊` },
+    { id:"s_f_02", group:"s_fechamento", title:"Pedido Confirmado Loja", tags:["fechamento","pedido","loja"],
+      text:`Perfeito 😊 seu pedido foi confirmado com sucesso! ✅📱
+
+Agora vamos solicitar o aparelho no estoque. O prazo para chegada na loja é de aproximadamente 1 a 2 horas após a confirmação do pedido.
+
+Assim que o aparelho chegar, te avisaremos imediatamente para você vir até a loja.` },
+
+    { id:"s_f_03", group:"s_fechamento", title:"Pedido Confirmado Shopping", tags:["pedido","shopping","entrega"],
+      text:`Perfeito 😊 seu pedido foi confirmado com sucesso! ✅📱
+
+Agora vamos solicitar o aparelho no estoque. O prazo para liberação é de aproximadamente 1 a 2 horas após a confirmação do pedido.
+
+Assim que estiver tudo pronto, acionaremos o motoboy para realizar a entrega no shopping escolhido 🛍️
+
+Quando você chegar ao shopping, peço por gentileza que nos envie uma foto no local para facilitar a identificação e o encontro com o motoboy 📸
+
+O pagamento é realizado no ato da entrega, após você conferir o aparelho com calma 🤝✨` },
 
     // PÓS VENDA
     { id:"s_p_01", group:"s_posvenda", title:"Pós-venda (confirmar recebimento + suporte)", tags:["pós-venda","suporte","configuração"],
@@ -972,7 +1053,7 @@ Quando quiser, me manda seu modelo/GB/cor ou seu orçamento que eu te ajudo a es
 Algumas opções acabam rápido durante o dia. Se você quiser, eu posso separar a melhor opção no seu nome por um tempinho enquanto você decide.` },
 
     { id:"s_r_07", group:"s_remarketing", title:"Remarketing (lacrado vs upgrade) — comparação simples", tags:["remarketing","lacrado","upgrade","comparação"],
-      text:`{nome}, pra te ajudar: 
+      text:`{nome}, pra te ajudar:
 • Lacrado = novo, garantia Apple
 • Upgrade = mais econômico, excelente estado + garantia da loja
 
@@ -997,12 +1078,13 @@ Se me disser o que você prioriza (economia, câmera ou bateria), eu te recomend
       text:`Olá {nome}, tudo bem? 😊
 Eu me chamo {atendente} e sou especialista da {loja_nome}. Vou dar prosseguimento com seu atendimento.`},
 
-    { id:"c_incidente", group:"con_geral", title:"Perguntar incidente (queda/líquido/reparo)", tags:["incidente","queda","líquido","reparo"],
-      text:`Certo, houve algum incidente antes de ficar assim ? (queda, contato com liquido, feito algum reparo,etc)`},
-
     { id:"c_pedir_modelo_defeito", group:"con_geral", title:"Pedir modelo e defeito (se não enviou)", tags:["qualificacao","modelo","defeito"],
       text:`Perfeito, {nome}! 😊
 Qual é o modelo do seu iPhone e qual defeito ele está apresentando?`},
+
+    /* ✅ ADICIONADA */
+    { id:"c_incidente", group:"con_geral", title:"Perguntar incidente (queda / líquido / reparo)", tags:["incidente","queda","liquido","reparo"],
+      text:`Certo, houve algum incidente antes de ficar assim ? (queda, contato com liquido, feito algum reparo,etc)`},
 
     { id:"c_orc_padrao", group:"con_geral", title:"Orçamento (padrão)", tags:["orcamento","padrao","agendar"],
       text:`🔧 {defeito} — {modelo}
@@ -1039,9 +1121,9 @@ Peça original, mantendo o aparelho exatamente como saiu de fábrica. Disponíve
 obs: O iPhone exibirá uma mensagem nos Ajustes informando que a tela foi substituída.
 As telas Standard e Premium tem um aumento no consumo da bateria.`},
 
-    // Bateria (2 mensagens)
+    // Bateria (3 mensagens)
 
-   { id:"c_bat_com_msg", group:"con_bateria", title:"Motivo da troca", tags:["bateria"," motivo","saude"],
+{ id:"c_bat_sem_msg", group:"con_bateria", title:"Motivo para troca de bateria", tags:["bateria","motivo","saude"],
       text:`Certo, você deseja trocar sua bateria por qual motivo ? (descarregamento rápido, saúde da bateria ruim, estufamento)`},
 
     { id:"c_bat_sem_msg", group:"con_bateria", title:"Bateria — sem mensagem (iOS18 aviso)", tags:["bateria","ios18","aviso","premium"],
@@ -1097,16 +1179,6 @@ Devido estar danificado ele não tem mais a resistência à água e garantia App
 Requer a senha de tela para realizar os testes.`},
 
     // Outros
-
-{ id:"c_placa_valor", group:"con_outros", title:"Serviço de Coleta", tags:["delivery","coleta"],
-      text:`Temos serviço de coleta e entrega!
-Retiramos o aparelho na sua residência, trazemos para o reparo e depois devolvemos pronto para você.
-
-A taxa de coleta é a partir de R$30, e o valor pode variar de acordo com a localidade.
-
-Me diz seu endereço certinho que já vejo para você.😊`},
-
-
     { id:"c_placa_valor", group:"con_outros", title:"Reparo de placa — orçamento", tags:["placa","reparo","3 a 6 dias","sucesso"],
       text:`reparo de placa – {modelo}
 💰 R$ 900,00 | até 6x sem juros
@@ -1259,6 +1331,11 @@ Passando rapidinho: se ainda quiser resolver o {defeito} do seu {modelo}, eu con
   const qModelo = el("qModelo");
   const qDefeito = el("qDefeito");
   const qObs = el("qObs");
+
+  const qValor = el("qValor");
+  const qParcelas = el("qParcelas");
+  const qPrazo = el("qPrazo");
+  const qGarantia = el("qGarantia");
 
   const qSaveVars = el("qSaveVars");
   const qResetVars = el("qResetVars");
@@ -1446,7 +1523,16 @@ Passando rapidinho: se ainda quiser resolver o {defeito} do seu {modelo}, eu con
       nome: (qNome.value||"").trim() || "{nome}",
       modelo: (qModelo.value||"").trim() || "{modelo}",
       defeito: (qDefeito.value||"").trim() || "{defeito}",
+      valor: (qValor.value||"").trim() || "{valor}",
+      parcelas: (qParcelas.value||"").trim() || "{parcelas}",
+      prazo: (qPrazo.value||"").trim() || "{prazo}",
+      garantia: (qGarantia.value||"").trim() || "{garantia}",
       obs: (qObs.value||"").trim() || "-",
+
+      // (sem UI agora; fica como placeholder caso use o template)
+      tela_standard_valor: "{tela_standard_valor}",
+      tela_premium_valor: "{tela_premium_valor}",
+      tela_original_valor: "{tela_original_valor}",
     };
   }
 
@@ -1457,7 +1543,14 @@ Passando rapidinho: se ainda quiser resolver o {defeito} do seu {modelo}, eu con
       .replaceAll("{nome}", v.nome)
       .replaceAll("{modelo}", v.modelo)
       .replaceAll("{defeito}", v.defeito)
-      .replaceAll("{obs}", v.obs);
+      .replaceAll("{valor}", v.valor)
+      .replaceAll("{parcelas}", v.parcelas)
+      .replaceAll("{prazo}", v.prazo)
+      .replaceAll("{garantia}", v.garantia)
+      .replaceAll("{obs}", v.obs)
+      .replaceAll("{tela_standard_valor}", v.tela_standard_valor)
+      .replaceAll("{tela_premium_valor}", v.tela_premium_valor)
+      .replaceAll("{tela_original_valor}", v.tela_original_valor);
   }
 
   // =======================
@@ -2144,6 +2237,7 @@ Passando rapidinho: se ainda quiser resolver o {defeito} do seu {modelo}, eu con
   ["input","change"].forEach(evt=>{
     [
       qLoja,qAtendente,qNome,qModelo,qDefeito,qObs,
+      qValor,qParcelas,qPrazo,qGarantia,
       qSearch
     ].forEach(node=> node.addEventListener(evt, renderAllQuickAccordions));
   });
@@ -2162,6 +2256,11 @@ Passando rapidinho: se ainda quiser resolver o {defeito} do seu {modelo}, eu con
       qDefeito.value = "";
       qObs.value = "";
 
+      qValor.value = "";
+      qParcelas.value = "";
+      qPrazo.value = "";
+      qGarantia.value = "";
+
       persistQuickVars(getVars());
       renderAllQuickAccordions();
       showToast("Variáveis limpas");
@@ -2178,7 +2277,57 @@ Passando rapidinho: se ainda quiser resolver o {defeito} do seu {modelo}, eu con
     qModelo.value = (v.modelo && v.modelo !== "{modelo}") ? v.modelo : "";
     qDefeito.value = (v.defeito && v.defeito !== "{defeito}") ? v.defeito : "";
     qObs.value = (v.obs && v.obs !== "-") ? v.obs : "";
+
+    qValor.value = (v.valor && v.valor !== "{valor}") ? v.valor : "";
+    qParcelas.value = (v.parcelas && v.parcelas !== "{parcelas}") ? v.parcelas : "";
+    qPrazo.value = (v.prazo && v.prazo !== "{prazo}") ? v.prazo : "";
+    qGarantia.value = (v.garantia && v.garantia !== "{garantia}") ? v.garantia : "";
   }
+
+  // =======================
+  // Export/Import (mantidos - simples: leads)
+  // =======================
+  btnExport.addEventListener("click", ()=>{
+    const payload = {
+      version: 1,
+      exportedAt: new Date().toISOString(),
+      leads
+    };
+    const blob = new Blob([JSON.stringify(payload, null, 2)], {type:"application/json"});
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "remarketing_export.json";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(a.href);
+    showToast("Exportado ✅");
+  });
+
+  btnImport.addEventListener("click", ()=>{
+    const inp = document.createElement("input");
+    inp.type = "file";
+    inp.accept = "application/json";
+    inp.onchange = async ()=>{
+      const file = inp.files && inp.files[0];
+      if(!file) return;
+      try{
+        const text = await file.text();
+        const json = JSON.parse(text);
+        if(json && Array.isArray(json.leads)){
+          leads = json.leads;
+          persistLeads();
+          render();
+          showToast("Importado ✅");
+        }else{
+          showToast("Arquivo inválido");
+        }
+      }catch(e){
+        showToast("Erro ao importar");
+      }
+    };
+    inp.click();
+  });
 
   // =======================
   // Init
@@ -2186,11 +2335,6 @@ Passando rapidinho: se ainda quiser resolver o {defeito} do seu {modelo}, eu con
   function init(){
     buildRmTemplateSelect();
     hydrateQuickVars();
-
-    // Variáveis: fechado por padrão
-    const varsDetails = document.getElementById("varsDetails");
-    if(varsDetails) varsDetails.open = false;
-
     renderAllQuickAccordions();
 
     resetForm();
